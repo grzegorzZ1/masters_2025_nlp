@@ -7,5 +7,8 @@ start:
 	docker compose up -d
 	docker compose logs -f app
 
+end:
+	docker compose down
+
 download-model:
 	docker exec -it ollama ollama pull $(MODEL_NAME)

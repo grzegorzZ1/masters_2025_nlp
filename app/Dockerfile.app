@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 COPY ./app /app
-COPY .env .env
+COPY .env /app/.env
 WORKDIR /app
 RUN source .env & pip install -r ./requirements_app.txt
 
