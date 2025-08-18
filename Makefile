@@ -12,3 +12,6 @@ end:
 
 download-model:
 	docker exec -it ollama ollama pull $(MODEL_NAME)
+
+test-locally:
+	streamlit run app/app.py

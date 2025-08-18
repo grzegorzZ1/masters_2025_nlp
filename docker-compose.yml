@@ -77,6 +77,8 @@ services:
   app:
     build:
       dockerfile: ./app/Dockerfile.app
+    env_file:
+    - .env
     ports:
       - "8501:8501"
     depends_on:
