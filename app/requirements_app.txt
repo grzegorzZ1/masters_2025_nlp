@@ -1,2 +1,5 @@
 streamlit
 dotenv
+sentence_transformers
+scikit-learn
+pydantic
