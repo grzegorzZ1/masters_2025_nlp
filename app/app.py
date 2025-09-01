@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import json
-from workers.worker_classes import ResponseLLM, TaskRecognizer
+from workers.worker_classes import *
 
 load_dotenv()
 
@@ -27,7 +27,9 @@ if prompt := st.chat_input("What is your question?"):
         st.markdown(prompt)
 
     chosen_task, date_range = task_recognizer.work(prompt)
-    formatted_answer = response_llm.work(st.session_state.messages, chosen_task, date_range)
+    formatted_answer = response_llm.work(
+        st.session_state.messages, chosen_task, date_range
+    )
     with st.chat_message("assistant"):
         response = st.write_stream(formatted_answer)
     st.session_state.messages.append({"role": "assistant", "content": response})
