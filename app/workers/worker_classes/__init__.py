@@ -2,6 +2,16 @@
 
 from .WorkerModule import Worker
 from .TaskRecognizerModule import TaskRecognizer
-from .ResponseLLMModule import ResponseLLM
+from .ResponseFinalModule import FinalResponseLLM
+from .FieldInputerModule import FieldInputer
+from .ResponseInvalidFields import InvalidResponseLLM
+from .FieldValidatorModule import FieldValidator
 
-__all__ = ["WorkerModule", "TaskRecognizerModule", "ResponseLLMModule"]
+__all__ = [
+    "Worker",
+    "TaskRecognizer",
+    "FinalResponseLLM",
+    "InvalidResponseLLM",
+    "FieldInputer",
+    "FieldValidator"
+]
