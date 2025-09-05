@@ -3,3 +3,8 @@ dotenv
 sentence_transformers
 scikit-learn
 pydantic
+pymilvus
+pandas
+numpy
+nltk
+spacy

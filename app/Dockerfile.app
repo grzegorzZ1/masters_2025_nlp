@@ -9,4 +9,4 @@ ENV IS_IN_DOCKER=Yes
 EXPOSE 8501
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-CMD ["streamlit", "run", "/app/app.py", "--server.address=0.0.0.0", "--server.port=8501"]
+CMD ["streamlit", "run", "/app/Home_Page.py", "--server.address=0.0.0.0", "--server.port=8501"]
