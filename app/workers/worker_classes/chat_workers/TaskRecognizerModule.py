@@ -1,4 +1,4 @@
-from workers.worker_classes.WorkerModule import Worker
+from workers.worker_classes.chat_workers.ChatWorkerModule import ChatWorker
 from sklearn.metrics.pairwise import cosine_similarity
 from workers.utils.task_definitions import *
 import numpy as np
@@ -6,7 +6,7 @@ import os
 from sentence_transformers import SentenceTransformer
 
 
-class TaskRecognizer(Worker):
+class TaskRecognizer(ChatWorker):
     def __init__(self):
         super().__init__()
         self.embedding_model = SentenceTransformer(os.getenv("EMBEDDING_MODEL"))
@@ -36,5 +36,3 @@ class TaskRecognizer(Worker):
         cosine_similarities = np.array(cosine_similarities).reshape(1, -1)[0]
         task_names = np.array(task_names)[np.argsort(cosine_similarities)][::-1]
         return task_names[0]
-
-

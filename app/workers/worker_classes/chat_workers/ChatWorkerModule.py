@@ -3,7 +3,7 @@ import os
 import requests
 
 
-class Worker(ABC):
+class ChatWorker(ABC):
     @abstractmethod
     def work(self):
         pass

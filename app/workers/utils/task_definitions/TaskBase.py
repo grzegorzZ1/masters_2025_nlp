@@ -2,11 +2,14 @@ from pydantic import BaseModel
 from typing import ClassVar
 import json
 from pathlib import Path
+from typing import Any
+
 
 class BaseTask(BaseModel):
 
     name: ClassVar[str]
     description: ClassVar[str]
+    vizualization_worker: ClassVar[Any]
 
     @property
     def embedding(self):

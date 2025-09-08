@@ -1,8 +1,8 @@
-from workers.worker_classes.WorkerModule import Worker
+from workers.worker_classes.chat_workers.ChatWorkerModule import ChatWorker
 import json
 
 
-class FinalResponseLLM(Worker):
+class FinalResponseLLM(ChatWorker):
     def __init__(self):
         super().__init__()
         self.base_prompt = """
@@ -14,9 +14,15 @@ class FinalResponseLLM(Worker):
         """
         Stream responses from Ollama API with real-time output
         """
-        whole_prompt = self.base_prompt + "Name: " + chosen_task.name + " . Params: " + chosen_task.model_dump_json()
+        whole_prompt = (
+            self.base_prompt
+            + "Name: "
+            + chosen_task.name
+            + " . Params: "
+            + chosen_task.model_dump_json()
+        )
         response = self._ollama_request(whole_prompt)
-        
+
         for line in response.iter_lines():
             if line:
                 try:
@@ -29,5 +35,3 @@ class FinalResponseLLM(Worker):
 
                 except json.JSONDecodeError:
                     continue
-
-

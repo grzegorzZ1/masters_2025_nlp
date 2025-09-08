@@ -1,9 +1,9 @@
-from workers.worker_classes.WorkerModule import Worker
+from workers.worker_classes.chat_workers.ChatWorkerModule import ChatWorker
 import json
 import io
 
 
-class InvalidResponseLLM(Worker):
+class InvalidResponseLLM(ChatWorker):
     def __init__(self):
         super().__init__()
 
@@ -13,7 +13,7 @@ class InvalidResponseLLM(Worker):
             However you need to specify following information to proceed: {str(invalid_fields)}
         """
         stream_response = io.StringIO(response)
-        
+
         for line in stream_response:
             for word in line.split():
                 try:
