@@ -2,19 +2,17 @@ from abc import ABC, abstractmethod
 import os
 import requests
 from pymilvus import Collection
+from sqlalchemy import create_engine
 
 
 class ResultsWorker(ABC):
-    def __init__(self, params):
-        self.params = params
-        self.collection = Collection("russian_speeches")
-        self.collection.load()
+    def __init__(self):
+        self.db_engine = create_engine(os.getenv("DATABASE_URL"), echo=False, future=True)
 
     @abstractmethod
-    def work(self):
-        pass
+    def work(self, task_instance):
+        self.data = self._query_texts(task_instance)
 
-    def query_texts(self, query_params, output_fields):
-        results = self.collection.query(
-            expr="year == 2000", output_fields=["year", "month", "day"]
-        )
+    @abstractmethod
+    def _query_texts(self, task_instance):
+        pass

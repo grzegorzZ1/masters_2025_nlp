@@ -2,6 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 import json
 from workers.worker_classes.chat_workers import *
+import pickle
 
 load_dotenv()
 
@@ -56,6 +57,13 @@ if prompt := st.chat_input("What is your question?"):
     with st.chat_message("assistant"):
         response = st.write_stream(formatted_answer)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
 if st.session_state.final_task:
-    if st.button("Go to Results"):
-        st.switch_page("pages/2 Results_Visualizer.py")
+    user_task_name = st.text_input("Enter New Task Name:")
+    if st.button("Save chosen task."):
+        with open(f"app/stored_instances/{user_task_name.lower().replace(' ', '_')}.pkl", "wb") as f:
+            pickle.dump(st.session_state.final_task, f)
+        st.success("Task saved successfully!")
+    if st.button("Clear chat"):
+        st.session_state.clear()
+        st.rerun()
