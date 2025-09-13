@@ -14,8 +14,9 @@ class WordCloudWorker(ResultsWorker):
     def __init__(self):
         super().__init__()
 
-    def work(self, task_instance):
-        super().work(task_instance)
+    def work(self, task_instance, dataset_class):
+        super().work(task_instance, dataset_class)
+        self.dataset_class = dataset_class
         all_words = []
         for speech in self.data:
             all_words += speech.words
@@ -34,14 +35,14 @@ class WordCloudWorker(ResultsWorker):
         
         st.pyplot(fig)
     
-    def _query_texts(self, task_instance):
+    def _query_texts(self, task_instance, dataset_class):
         with Session(self.db_engine) as s:
             start = datetime.strptime(task_instance.min_date, "%d-%M-%Y").date()
             end = datetime.strptime(task_instance.max_date, "%d-%M-%Y").date()
 
             stmt = (
-                select(Speech)
-                .where(Speech.doc_date.between(start, end))
+                select(dataset_class)
+                .where(dataset_class.doc_date.between(start, end))
             )
 
             return s.execute(stmt).scalars().all()

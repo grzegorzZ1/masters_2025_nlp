@@ -1,17 +1,18 @@
 import streamlit as st
 import datetime
-from streamlit_modal import Modal
+from workers.worker_classes.dataset_workers import SubsetCreator
 
 st.set_page_config("Dataset Creation")
 st.title("Dataset Creation")
 
 st.session_state.final_filters = {}
-
 st.session_state.chosen_filters = {
     "date": False,
     "keywords": False,
     "sentiment": False
 }
+
+base_dataset_name = st.selectbox("Choose a base dastaset:", ["speech"])
 
 if st.toggle("Filter by date."):
     col1, col2 = st.columns(2)
@@ -19,15 +20,21 @@ if st.toggle("Filter by date."):
     with col1:
         start_date = st.date_input(
             "Start Date",
-            datetime.date.today()
-        ).strftime("%Y-%m-%d")
+            datetime.date(2000, 1, 1),
+            min_value=datetime.date(1995, 1, 1),
+            max_value=datetime.date.today()
+        )
 
     with col2:
         end_date = st.date_input(
             "End Date",
-            datetime.date.today() - datetime.timedelta(weeks=4)
-        ).strftime("%Y-%m-%d")
-    
+            datetime.date.today(),
+            min_value=start_date,
+            max_value=datetime.date.today()
+        )
+    start_date = start_date.strftime("%Y-%m-%d")
+    end_date = end_date.strftime("%Y-%m-%d")
+
     st.session_state.chosen_filters["date"] = True
 
 if st.toggle("Filter by keywords."):
@@ -97,6 +104,13 @@ with st.popover("Create dataset with selected filters"):
         st.session_state.final_filters["keywords"] = st.session_state.keyword_tags
     if st.session_state.chosen_filters["sentiment"]:
         st.session_state.final_filters["sentiment"] = st.session_state.sentiment_tags
-    name = st.text_input("Enter new dataset name:")
+    subset_name = st.text_input("Enter new dataset name:")
     if st.button("Submit"):
-        st.write(name, st.session_state.final_filters)
+        while True:
+            try:
+                subset_creator_worker = SubsetCreator(st.session_state.final_filters, base_dataset_name, subset_name)
+                filtered_speeches_count = subset_creator_worker.work()
+                st.write(f"Created subset dataset with: {filtered_speeches_count} observations.")
+                break
+            except:
+                continue

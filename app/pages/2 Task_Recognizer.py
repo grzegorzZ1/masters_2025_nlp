@@ -63,7 +63,7 @@ if st.session_state.final_task:
     if st.button("Save chosen task."):
         with open(f"app/stored_instances/{user_task_name.lower().replace(' ', '_')}.pkl", "wb") as f:
             pickle.dump(st.session_state.final_task, f)
-        st.success("Task saved successfully!")
+        st.success("Task saved successfully! <3")
     if st.button("Clear chat"):
         st.session_state.clear()
         st.rerun()

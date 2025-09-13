@@ -8,8 +8,8 @@ class TermDistributionWorker(ResultsWorker):
         super().__init__()
         self.output_fields = ["year", "month", "day", "words"]
 
-    def work(self, task_instance):
-        super().work(task_instance)
+    def work(self, task_instance, dataset_class):
+        super().work(task_instance, dataset_class)
     
-    def _query_texts(self, task_instance):
+    def _query_texts(self, task_instance, dataset_class):
         pass
