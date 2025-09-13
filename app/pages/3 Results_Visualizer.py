@@ -3,7 +3,7 @@ import os
 import pickle
 
 st.set_page_config("Results Visuzalizer")
-st.title("Results Visuzalizer.")
+st.title("Results Visuzalizer")
 
 if "final_task" not in st.session_state:
     st.session_state.final_task = None
