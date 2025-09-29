@@ -37,23 +37,26 @@ if prompt := st.chat_input("What is your question?"):
     with st.chat_message("user"):
         st.markdown(prompt)
     if not st.session_state.chosen_task:
-        st.session_state.chosen_task = task_recognizer.work(prompt)
-    st.session_state.chosen_task = field_inputer.work(
-        st.session_state.chosen_task, prompt
-    )
-    invalid_fields = field_validator.work(st.session_state.chosen_task)
-    if len(invalid_fields) == 0:
-        formatted_answer = final_response_llm.work(st.session_state.chosen_task)
-        st.session_state.final_task = st.session_state.chosen_task
-        st.session_state.chosen_task = None
-    else:
-        formatted_answer = invalid_fields_response_llm.work(
-            st.session_state.chosen_task, invalid_fields
-        )
-        st.session_state.chosen_task = field_inputer.work(
-            st.session_state.chosen_task, prompt
-        )
-        st.session_state.final_task = None
+        st.session_state.chosen_tasks = task_recognizer.work(prompt)
+    # st.session_state.chosen_task = field_inputer.work(
+    #     st.session_state.chosen_task, prompt
+    # )
+    # invalid_fields = field_validator.work(st.session_state.chosen_task)
+    # if len(invalid_fields) == 0:
+    #     formatted_answer = final_response_llm.work(st.session_state.chosen_task)
+    #     st.session_state.final_task = st.session_state.chosen_task
+    #     st.session_state.chosen_task = None
+    # else:
+    #     formatted_answer = invalid_fields_response_llm.work(
+    #         st.session_state.chosen_task, invalid_fields
+    #     )
+    #     st.session_state.chosen_task = field_inputer.work(
+    #         st.session_state.chosen_task, prompt
+    #     )
+    #     st.session_state.final_task = None
+
+    formatted_answer = final_response_llm.work(st.session_state.chosen_tasks)
+    
     with st.chat_message("assistant"):
         response = st.write_stream(formatted_answer)
     st.session_state.messages.append({"role": "assistant", "content": response})

@@ -14,12 +14,18 @@ class TaskRecognizer(ChatWorker):
             self.task_classes = [
                 TermDistribution,
                 WordCloud,
+                RelationFinder,
+                RelatedTermCounts,
+                TermCounts
             ]
 
     def work(self, user_prompt):
-        chosen_task = self._find_task(user_prompt)
+        chosen_classes = self._find_task(user_prompt)
+        chosen_tasks = []
+        for c in chosen_classes:
+            chosen_tasks.append(c())
 
-        return chosen_task()
+        return chosen_tasks
 
     def _find_task(self, user_prompt):
         prompt_embedd = self.embedding_model.encode(user_prompt).reshape(1, -1)
@@ -35,4 +41,4 @@ class TaskRecognizer(ChatWorker):
             )
         cosine_similarities = np.array(cosine_similarities).reshape(1, -1)[0]
         task_names = np.array(task_names)[np.argsort(cosine_similarities)][::-1]
-        return task_names[0]
+        return task_names[:3]

@@ -1,5 +1,5 @@
 from workers.utils.task_definitions.TaskBase import BaseTask
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, List
 from pydantic import Field
 from typing import Any
 from workers.worker_classes.results_workers import TermDistributionWorker
@@ -15,20 +15,7 @@ class TermDistribution(BaseTask):
     """
     vizualization_worker: ClassVar[Any] = TermDistributionWorker
 
-    min_date: Optional[str] = Field(
-        default=None, description="""Minimum date in format DAY-MONTH-YEAR."""
-    )
-
-    max_date: Optional[str] = Field(
-        default=None, description="""Maximum date in format DAY-MONTH-YEAR."""
-    )
-
-    term: Optional[str] = Field(
+    terms: Optional[List[str]] = Field(
         default=None,
-        description="Term selected by user, for which worker should define distribution of its presence in speeches",
-    )
-
-    granularity: Optional[str] = Field(
-        default=None,
-        description="Defines whether on timeline user should see appearance on each day, month, or year.",
+        description="List of Terms selected by user, for which worker should define distribution of its presence in speeches. It can contain a single element or few.",
     )

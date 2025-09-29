@@ -6,21 +6,23 @@ class FinalResponseLLM(ChatWorker):
     def __init__(self):
         super().__init__()
         self.base_prompt = """
-            You will be given task object with its parameters.
-            Show it to me specifying name of the task and after that show me formatted dictionary of its parameters.
+            You will be given list of task objects with their descriptions.
+            Show it to me as an ordered list of tasks including task name and description.
         """
 
-    def work(self, chosen_task):
+    def work(self, chosen_tasks):
         """
         Stream responses from Ollama API with real-time output
         """
-        whole_prompt = (
-            self.base_prompt
-            + "Name: "
-            + chosen_task.name
-            + " . Params: "
-            + chosen_task.model_dump_json()
-        )
+        whole_prompt = self.base_prompt
+        for task in chosen_tasks:
+            whole_prompt = (
+                whole_prompt
+                + "Name: "
+                + task.name
+                + ". Description: "
+                + task.description
+            )
         response = self._ollama_request(whole_prompt)
 
         for line in response.iter_lines():

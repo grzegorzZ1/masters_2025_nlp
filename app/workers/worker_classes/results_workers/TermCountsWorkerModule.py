@@ -1,7 +1,7 @@
 from workers.worker_classes.results_workers.ResultsWorkerModule import ResultsWorker
 
 
-class TermDistributionWorker(ResultsWorker):
+class TermCountsWorker(ResultsWorker):
     def __init__(self):
         super().__init__()
         self.output_fields = ["year", "month", "day", "words"]
