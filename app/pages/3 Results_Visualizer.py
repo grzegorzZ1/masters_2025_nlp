@@ -26,6 +26,7 @@ with col1:
     if st.button("Load task"):
         with open(f"{file_path}.pkl", "rb") as f:
             st.session_state.final_task = pickle.load(f)
+        st.write(f"Task **{st.session_state.final_task.name}** chosen ✅")
     if st.button("Delete task"):
         os.remove(f"{file_path}.pkl")
         st.session_state.clear()
@@ -42,7 +43,7 @@ with col2:
         dataset_module = importlib.import_module("database_utils.utils")
         st.session_state.final_dataset = getattr(dataset_module, chosen_dataset)
     if st.session_state.final_dataset:
-        st.write(f"Dataset {st.session_state.final_dataset.__name__} chosen.")
+        st.write(f"Dataset **{st.session_state.final_dataset.__name__}** loaded ✅")
         if not st.session_state.final_dataset.__name__.__eq__("Speech"):
             if st.button("Delete dataset"):
                 subset_deletor = SubsetDeletor(st.session_state.final_dataset.__name__)
@@ -55,7 +56,7 @@ if st.session_state.final_task:
     for key, value in st.session_state.final_task:
         description = type(st.session_state.final_task).model_fields[key].description
         st.session_state.visualization_params[key] = st.text_input(key, value=value, help=description)
-
+if st.session_state.final_task and st.session_state.final_dataset:
     results_worker = st.session_state.final_task.vizualization_worker()
     st.session_state.final_task = type(st.session_state.final_task)(**st.session_state.visualization_params)
     results_worker.work(st.session_state.final_task, st.session_state.final_dataset)

@@ -18,7 +18,6 @@ class FieldInputer(ChatWorker):
                 llm_response = self._extract_single_field(
                     name, user_prompt, task_descriptions[name]
                 ).replace(" ", "")
-                print(llm_response)
                 final_response = json.loads(llm_response)
                 if final_response[name] == "ERROR":
                     task_updated_fields[name] = None

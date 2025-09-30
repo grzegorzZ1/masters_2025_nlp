@@ -2,16 +2,18 @@
 
 from .ChatWorkerModule import ChatWorker
 from .TaskRecognizerModule import TaskRecognizer
-from .ResponseFinalModule import FinalResponseLLM
+from .TaskChosenResponseModule import TaskChosenResponse
 from .FieldInputerModule import FieldInputer
-from .ResponseInvalidFields import InvalidResponseLLM
+from .ResponseInvalidFieldsModule import InvalidResponse
 from .FieldValidatorModule import FieldValidator
+from .FinalResponseModule import FinalResponse
 
 __all__ = [
     "ChatWorker",
     "TaskRecognizer",
-    "FinalResponseLLM",
-    "InvalidResponseLLM",
+    "TaskChosenResponse",
+    "InvalidResponse",
     "FieldInputer",
     "FieldValidator",
+    "FinalResponse"
 ]
