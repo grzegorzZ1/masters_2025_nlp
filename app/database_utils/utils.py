@@ -20,3 +20,7 @@ class Base(DeclarativeBase):
 
 class Speech(Base):
     __tablename__ = 'speeches'
+
+
+class Aaa(Base):
+    __tablename__ = "aaa"

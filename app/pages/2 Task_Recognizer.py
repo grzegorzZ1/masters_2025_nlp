@@ -33,11 +33,6 @@ if "invalid_fields" not in st.session_state:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-# Example how to add python code block to output
-# ```python
-# for i in range(5):
-#     print(i)
-# ```
 
 if prompt := st.chat_input("What is your question?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
