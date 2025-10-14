@@ -13,9 +13,9 @@ class SubsetCreator(BaseSubsetWorker):
         self.subset_database = subset_database
         self.base_database = base_database
 
-        self.date_filters = input_params.get("date", None)
-        self.keywords_filters = input_params.get("keywords", None)
-        self.sentiment_filters = input_params.get("sentiment", None)
+        self.date_filter = input_params.get("date", None)
+        self.keywords_filter = input_params.get("keywords", None)
+        self.sentiment_filter = input_params.get("sentiment", None)
 
         self.formatted_base_dataset_name = self.base_database.capitalize().replace(" ", "")
         self.formatted_subset_dataset_name = self.subset_database.capitalize().replace(" ", "")
@@ -43,14 +43,14 @@ class SubsetCreator(BaseSubsetWorker):
         with Session(self.engine) as s:
             stmt = select(self.base_dataset_class)
             
-            if self.date_filters:
+            if self.date_filter:
                 stmt = stmt.where(self.base_dataset_class.doc_date.between(
-                        datetime.strptime(self.date_filters["min_date"], "%Y-%m-%d").date(),
-                        datetime.strptime(self.date_filters["max_date"], "%Y-%m-%d").date()
+                        datetime.strptime(self.date_filter.min_date, "%d-%m-%Y").date(),
+                        datetime.strptime(self.date_filter.max_date, "%d-%m-%Y").date()
                     )
                 )
-            if self.keywords_filters:
-                stmt = stmt.where(or_(*[self.base_dataset_class.words.any(word) for word in self.keywords_filters]))
+            if self.keywords_filter:
+                stmt = stmt.where(and_(*[self.base_dataset_class.words.any(word.lower()) for word in self.keywords_filter.terms]))
             
             subset_speeches = s.execute(stmt).scalars().all()
             

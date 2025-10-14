@@ -22,5 +22,9 @@ class Speech(Base):
     __tablename__ = 'speeches'
 
 
-class Aaa(Base):
-    __tablename__ = "aaa"
+class Test(Base):
+    __tablename__ = "test"
+
+
+class Poland(Base):
+    __tablename__ = "poland"

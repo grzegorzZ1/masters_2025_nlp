@@ -4,8 +4,7 @@ from pydantic import Field
 
 class AspectBasedFilter(BaseFilter):
     name: ClassVar[str] = "aspect_based"
-    description: ClassVar[str] = """
-        Filter which chooses only texts which there is a mention of each of terms specified by user, but each terms is mentioned with a sentiment chosen by user.
+    description: ClassVar[str] = """Filter which chooses only texts which there is a mention of each of terms specified by user, but each terms is mentioned with a sentiment chosen by user.
         Example: User requests analysis of text with positive mention about Poland. It means filter will take only texts where Poland is mentioned in positive way.
     """
 
