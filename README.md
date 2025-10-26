@@ -1,3 +1,9 @@
+# Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
+Thesis Author: Grzegorz Zbrzeżny
+
+Thesis Supervisor: dr Anna Wróblewska
+
+
 ## List of research questions created by author of this repository in collaboration with Ernest Wyciszkiewicz and Centrum Dialogu im. Juliusza Mieroszewskiego.
 
 #### Original list of questions in Polish:
