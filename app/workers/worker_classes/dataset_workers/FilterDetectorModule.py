@@ -8,7 +8,6 @@ class FilterDetector:
         self.filters = {
             "date": DateFilter,
             "keywords": KeywordFilter,
-            "sentiment": AspectBasedFilter
         }
         self.base_prompt = """
 

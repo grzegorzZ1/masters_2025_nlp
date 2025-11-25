@@ -1,81 +1,73 @@
-from sqlalchemy import create_engine, select, and_, or_
 from workers.worker_classes.dataset_workers.BaseSubsetWorkerModule import BaseSubsetWorker
-from database_utils.utils import *
-from sqlalchemy.orm import Session
-from datetime import datetime
-from pathlib import Path
-import textwrap
-import importlib
 
 class SubsetCreator(BaseSubsetWorker):
-    def __init__(self, input_params, base_database, subset_database):
+    def __init__(self, input_params, base_database, subset_database, subset_max_size=10000):
         super().__init__()
         self.subset_database = subset_database
         self.base_database = base_database
 
+        self.subset_max_size = subset_max_size
+
         self.date_filter = input_params.get("date", None)
         self.keywords_filter = input_params.get("keywords", None)
-        self.sentiment_filter = input_params.get("sentiment", None)
 
-        self.formatted_base_dataset_name = self.base_database.capitalize().replace(" ", "")
-        self.formatted_subset_dataset_name = self.subset_database.capitalize().replace(" ", "")
-
-        self.dataset_module = importlib.import_module("database_utils.utils")
-        self.base_dataset_class = getattr(self.dataset_module, self.formatted_base_dataset_name)
-
-        DATABASE_URL = f"postgresql+psycopg://admin:admin@localhost:5432/speeches"
-        self.engine = create_engine(DATABASE_URL, echo=False, future=True)
+        self.formatted_base_index_name = self.base_database.replace(" ", "_")
+        self.formatted_index_dataset_name = self.subset_database.replace(" ", "_")
 
     def work(self):
-        self._add_model_class(
-            file_path=self.utils_file_path,
-            class_name=self.formatted_subset_dataset_name,
-            table_name=self.subset_database
-        )
-        self.dataset_module = importlib.import_module("database_utils.utils")
-        self.subset_dataset_class = getattr(self.dataset_module, self.formatted_subset_dataset_name)
-        
         try:
-            self.subset_dataset_class.__table__.drop(bind=self.engine)
+            print("Refreshing your index...")
+            self.es_client.indices.delete(index=self.formatted_index_dataset_name)
         except:
-            print("Creating new dataset...")
-        self.subset_dataset_class.__table__.create(bind=self.engine)
-        with Session(self.engine) as s:
-            stmt = select(self.base_dataset_class)
-            
-            if self.date_filter:
-                stmt = stmt.where(self.base_dataset_class.doc_date.between(
-                        datetime.strptime(self.date_filter.min_date, "%d-%m-%Y").date(),
-                        datetime.strptime(self.date_filter.max_date, "%d-%m-%Y").date()
-                    )
-                )
-            if self.keywords_filter:
-                stmt = stmt.where(and_(*[self.base_dataset_class.words.any(word.lower()) for word in self.keywords_filter.terms]))
-            
-            subset_speeches = s.execute(stmt).scalars().all()
-            
-            for sp in subset_speeches:
-                s.add(
-                    self.subset_dataset_class(
-                        text=sp.text,
-                        doc_date=sp.doc_date,
-                        words=sp.words,
-                        entity_names=sp.entity_names,
-                        entity_ids=sp.entity_ids,
-                    )
-                )
+            print("Creating new index...")
 
-            s.commit()
+        chosen_queries = []
+        if self.date_filter:
+            chosen_queries.append(self._get_filter_by_date_query(self.date_filter.min_date, self.date_filter.max_date))
+        if self.keywords_filter:
+            chosen_queries.append(self._get_filter_by_words_query(self.keywords_filter.terms))
 
-            return len(subset_speeches)
-        
-    def _add_model_class(self, file_path, class_name, table_name):
-        if not class_name in self._get_classes_from_file(file_path):
-            file = Path(file_path)
-            class_def = [f"\n\nclass {class_name}(Base):"]
-            class_def.append(f'    __tablename__ = "{table_name}"\n')
+        final_query = {
+            "bool": {
+                "must": chosen_queries
+            }
+        }
 
-            class_code = "\n".join(class_def)
+        response = self.es_client.search(
+            index=self.formatted_base_index_name,
+            query=final_query,
+            size=self.subset_max_size
+        )
+        subset = response["hits"]["hits"]
+        index = 0
+        for doc in subset:
+            index += 1
+            self.es_client.index(
+                index=self.formatted_index_dataset_name,
+                id=index,
+                document=doc["_source"]
+            )
 
-            with file.open("a", encoding="utf-8") as f:
-                f.write(textwrap.dedent(class_code))
+        return len(subset)
+
+    def _get_filter_by_words_query(self, words, type_of_filter="and"):
+        return {
+                    "match": {
+                        "text": {
+                            "query": " ".join(words),
+                            "operator": type_of_filter
+                        }
+                    }
+                }
+
+    def _get_filter_by_date_query(self, start_date, end_date):
+        formatted_start_date = "-".join(start_date.split("-")[::-1])
+        formatted_end_date = "-".join(end_date.split("-")[::-1])
+        return {
+                    "range": {
+                        "date": {
+                            "gte": formatted_start_date,
+                            "lte": formatted_end_date
+                        }
+                    }
+                }

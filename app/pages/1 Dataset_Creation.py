@@ -1,5 +1,4 @@
 import streamlit as st
-import datetime
 from workers.worker_classes.dataset_workers import SubsetCreator, FilterDetector
 from workers.worker_classes.chat_workers import DatasetFilterResponse
 
@@ -18,7 +17,7 @@ if "user_full_context" not in st.session_state:
 filter_detector = FilterDetector()
 filter_response = DatasetFilterResponse()
 
-base_dataset_name = st.selectbox("Choose a base dastaset:", ["speech"])
+base_dataset_name = st.selectbox("Choose a base dastaset:", ["russian_speeches"])
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -40,14 +39,9 @@ if prompt := st.chat_input("What is your question?"):
 if st.session_state.chosen_filters != {}:
     subset_name = st.text_input("Enter new dataset name:")
     if st.button("Create dataset with selected filters"):
-        for i in range(10):
-            try:
-                subset_creator_worker = SubsetCreator(st.session_state.chosen_filters, base_dataset_name, subset_name)
-                filtered_speeches_count = subset_creator_worker.work()
-                st.write(f"Created subset dataset with: {filtered_speeches_count} observations.")
-                break
-            except AttributeError:
-                continue
+        subset_creator_worker = SubsetCreator(st.session_state.chosen_filters, base_dataset_name, subset_name)
+        filtered_speeches_count = subset_creator_worker.work()
+        st.write(f"Created subset dataset with: {filtered_speeches_count} observations.")
 if st.button("Clear chat"):
     st.session_state.clear()
     st.rerun()

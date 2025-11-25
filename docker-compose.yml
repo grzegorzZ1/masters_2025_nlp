@@ -1,15 +1,14 @@
 version: '3.5'
 
 services:
-  db:
-    image: postgres:16
-    container_name: speeches-database
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.1
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: speeches
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
-      - "5432:5432"
+      - "9200:9200"
 
   ollama:
     image: ollama/ollama
