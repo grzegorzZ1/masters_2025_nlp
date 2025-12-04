@@ -3,8 +3,6 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import streamlit as st
-import json
-from datetime import datetime
 
 
 class WordCloudWorker(ResultsWorker):
@@ -61,5 +59,3 @@ class WordCloudWorker(ResultsWorker):
             subset_speech_texts.append(doc["_source"]["text"])
         
         return subset_speech_texts
-
-

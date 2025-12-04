@@ -23,7 +23,7 @@ class ChatWorker(ABC):
 
         try:
             response = requests.post(
-                current_llama_uri, json=payload, stream=is_stream, timeout=60
+                current_llama_uri, json=payload, stream=is_stream
             )
             response.raise_for_status()
             return response

@@ -16,7 +16,6 @@ class TaskRecognizer(ChatWorker):
                 WordCloud,
                 RelationFinder,
                 RelatedTermCounts,
-                TermCounts
             ]
 
     def work(self, user_prompt):

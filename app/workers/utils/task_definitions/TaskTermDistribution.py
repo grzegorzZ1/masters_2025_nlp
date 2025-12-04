@@ -14,8 +14,11 @@ class TermDistribution(BaseTask):
         This task should create a plot with distribution of appereance in all texts of specific term given by the user throughtout days, months or years.
     """
     vizualization_worker: ClassVar[Any] = TermDistributionWorker
-
-    terms: Optional[List[str]] = Field(
+    terms: Optional[str] = Field(
         default=None,
-        description="List of Terms selected by user, for which worker should define distribution of its presence in speeches. It can contain a single element or few.",
+        description="String containing list of Terms selected by user, for which worker should define distribution of its presence in speeches. It can contain a single element or few. It should look like this: term1,term2,term3",
+    )
+    granularity: Optional[str] = Field(
+        default=None,
+        description="Field states if results should be shown for each day, month or year. This field is a single word abd can have one of the following values: day, month, year"
     )
