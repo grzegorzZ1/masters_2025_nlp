@@ -5,7 +5,6 @@ endif
 
 start:
 	docker compose up -d
-	docker compose logs -f app
 
 end:
 	docker compose down

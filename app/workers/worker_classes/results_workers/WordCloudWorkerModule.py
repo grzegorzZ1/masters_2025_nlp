@@ -55,7 +55,9 @@ class WordCloudWorker(ResultsWorker):
             query=query,
             size=self.subset_max_size
         )
+        self.instances_for_new_subset = []
         for doc in response["hits"]["hits"]:
+            self.instances_for_new_subset.append(doc)
             subset_speech_texts.append(doc["_source"]["text"])
         
         return subset_speech_texts

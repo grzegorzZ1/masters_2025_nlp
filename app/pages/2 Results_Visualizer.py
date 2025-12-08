@@ -2,8 +2,8 @@ import streamlit as st
 import os
 import pickle
 from workers.worker_classes.dataset_workers import SubsetDeletor
-import importlib
 from elasticsearch import Elasticsearch
+from typing import _LiteralGenericAlias
 
 es_client = Elasticsearch('http://localhost:9200')
 
@@ -57,8 +57,13 @@ if st.session_state.final_task:
     st.subheader(f"Chosen task: {st.session_state.final_task.name.replace('_', ' ').capitalize()}")
 
     for key, value in st.session_state.final_task:
-        description = type(st.session_state.final_task).model_fields[key].description
-        st.session_state.visualization_params[key] = st.text_input(key, value=value, help=description)
+        print(key)
+        field = type(st.session_state.final_task).model_fields[key]
+        description = field.description
+        if type(field.annotation) == _LiteralGenericAlias:
+            st.session_state.visualization_params[key] = st.selectbox(key, options=field.annotation.__dict__["__args__"], help=description)
+        else:
+            st.session_state.visualization_params[key] = st.text_input(key, value=value, help=description)
 if st.session_state.final_task and st.session_state.final_dataset:
     results_worker = st.session_state.final_task.vizualization_worker()
     st.session_state.final_task = type(st.session_state.final_task)(**st.session_state.visualization_params)
@@ -67,15 +72,26 @@ if st.session_state.final_task and st.session_state.final_dataset:
     with st.expander("Create new task"):
         user_task_name = st.text_input("Enter New Task Name:")
         
-        if st.button("Submit"):
+        if st.button("Submit", key=1111):
             if user_task_name:
-                file_path = os.path.join(folder_path, user_task_name)
-                with open(f"{file_path}.pkl", "wb") as f:
+                task_file_path = os.path.join(folder_path, user_task_name)
+                with open(f"{task_file_path}.pkl", "wb") as f:
                     pickle.dump(
-                        type(st.session_state.final_task)(**st.session_state.visualization_params),
+                        st.session_state.final_task,
                         f
                     )
                 st.success("Task created!")
                 st.rerun()
             else:
                 st.warning("Please provide a unique name for new task.")
+
+    with st.expander("Create new subset"):
+        user_subset_name = st.text_input("Enter New Subset Name:")
+        
+        if st.button("Submit", key=2222):
+            if user_subset_name:
+                subset_len = results_worker._create_subset_dataset(user_subset_name)
+                st.success(f"Subset with {subset_len} observations created!")
+                st.rerun()
+            else:
+                st.warning("Please provide a unique name for new subset.")

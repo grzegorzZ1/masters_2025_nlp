@@ -33,21 +33,34 @@ class TermDistributionWorker(ResultsWorker):
         if task_instance.granularity == "year":
             date_regex = "%Y"
 
-        fig, ax = plt.subplots(figsize=(10, 5))
+        fig, ax = plt.subplots(2, 1, figsize=(10, 10))
+        plt.subplots_adjust(hspace=0.5)
 
         for word in task_instance.terms.split(","):
-            sorted_items = sorted(appear_counts[word].items(), key=lambda x: datetime.strptime(x[0], date_regex))
-            dates = [item[0] for item in sorted_items]
-            values = [item[1] for item in sorted_items]
+            sorted_items_appear = sorted(appear_counts[word].items(), key=lambda x: datetime.strptime(x[0], date_regex))
+            dates_appear = [item[0] for item in sorted_items_appear]
+            values_appear = [item[1] for item in sorted_items_appear]
+            ax[0].plot(dates_appear, values_appear, label=word)
 
-            ax.plot(dates, values, label=word)
+            sorted_items_docs = sorted(docs_counts[word].items(), key=lambda x: datetime.strptime(x[0], date_regex))
+            dates_docs = [item[0] for item in sorted_items_docs]
+            values_docs = [item[1] for item in sorted_items_docs]
 
-        ax.set_title("Monthly Values Plot")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Value")
-        ax.legend()
-        ax.tick_params(axis="x", rotation=45)
+            ax[1].plot(dates_docs, values_docs, label=word)
+
+        ax[0].set_title("Monthly Appear Count")
+        ax[0].set_xlabel("Date")
+        ax[0].set_ylabel("Apear Count")
+        ax[0].legend()
+        ax[0].tick_params(axis="x", rotation=45)
         
+
+        ax[1].set_title("Monthly Document Count in Which Word Appeared")
+        ax[1].set_xlabel("Date")
+        ax[1].set_ylabel("Documents Count")
+        ax[1].legend()
+        ax[1].tick_params(axis="x", rotation=45)
+
         st.pyplot(fig)
     
     def _query_texts(self, task_instance, index_name):
@@ -83,7 +96,9 @@ class TermDistributionWorker(ResultsWorker):
             query=query,
             size=self.subset_max_size
         )
+        self.instances_for_new_subset = []
         for doc in response["hits"]["hits"]:
+            self.instances_for_new_subset.append(doc)
             doc_date = doc["_source"]["date"].split("T")[0]
             if task_instance.granularity == "month":
                 doc_date = "-".join(doc_date.split("-")[:2])
