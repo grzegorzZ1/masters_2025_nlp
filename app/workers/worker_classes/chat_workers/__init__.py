@@ -7,6 +7,7 @@ from .FieldInputerModule import FieldInputer
 from .ResponseInvalidFieldsModule import InvalidResponse
 from .FieldValidatorModule import FieldValidator
 from .FinalResponseModule import FinalResponse
+from .DatasetDescriptionGeneratorModule import DatasetDescriptionGenerator
 
 __all__ = [
     "ChatWorker",
@@ -16,4 +17,5 @@ __all__ = [
     "FieldInputer",
     "FieldValidator",
     "FinalResponse",
+    "DatasetDescriptionGenerator"
 ]

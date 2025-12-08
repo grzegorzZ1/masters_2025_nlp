@@ -11,8 +11,9 @@ class WordCloudWorker(ResultsWorker):
 
     def work(self, task_instance, index_name):
         super().work(task_instance, index_name)
+
         all_words = []
-        for speech in self.data:
+        for speech in self.final_data:
             response = self.es_client.indices.analyze(
                 body={
                     "tokenizer": "standard",
@@ -38,9 +39,17 @@ class WordCloudWorker(ResultsWorker):
         ax.axis('off')
         
         st.pyplot(fig)
+        
+        df = word_frequencies.reset_index()
+        df.columns = ['Term', 'Frequency']
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=True,
+            height=600,
+        )
 
-    def _query_texts(self, task_instance, index_name):
-        subset_speech_texts = []
+    def _create_query(self, task_instance):
         query = {
                     "range": {
                         "date": {
@@ -49,15 +58,11 @@ class WordCloudWorker(ResultsWorker):
                         }
                     }
                 }
+        return query
 
-        response = self.es_client.search(
-            index=index_name,
-            query=query,
-            size=self.subset_max_size
-        )
-        self.instances_for_new_subset = []
-        for doc in response["hits"]["hits"]:
-            self.instances_for_new_subset.append(doc)
-            subset_speech_texts.append(doc["_source"]["text"])
+    def _prepare_final_data(self):
+        final_data = []
+        for doc in self.data:
+            final_data.append(doc["_source"]["text"])
         
-        return subset_speech_texts
+        return final_data

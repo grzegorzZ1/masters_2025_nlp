@@ -7,11 +7,12 @@ class DocsRelatedFinderWorker(ResultsWorker):
         super().__init__()
 
     def work(self, task_instance, index_name):
-        super().work(task_instance, index_name)
+        super().work(task_instance, index_name, task_instance.result_count)
+
         full_texts = []
-        for row in self.data:
+        for row in self.final_data:
             full_texts.append(row.pop("text", None))
-        df = pd.json_normalize(self.data)
+        df = pd.json_normalize(self.final_data)
 
         cols = ["score"] + [c for c in df.columns if c != "score"]
         df = df[cols]
@@ -45,7 +46,7 @@ class DocsRelatedFinderWorker(ResultsWorker):
             idx = selected_row["selection"]["rows"][0]
             st.write(full_texts[idx])
     
-    def _query_texts(self, task_instance, index_name):
+    def _create_query(self, task_instance):
         query = {}
         if task_instance.search_type == "more_like_this":
             query = {  
@@ -59,18 +60,14 @@ class DocsRelatedFinderWorker(ResultsWorker):
                         "max_query_terms": 12
                     }
             }
-
-        response = self.es_client.search(
-            index=index_name,
-            query=query,
-            size=min(self.subset_max_size, task_instance.result_count)
-        )
-        res = []
-        self.instances_for_new_subset = []
-        for single_hit in response["hits"]["hits"]:
-            self.instances_for_new_subset.append(single_hit)
-            single_speech = single_hit["_source"]
+        return query
+    
+    def _prepare_final_data(self):
+        final_data = []
+        for doc in self.data:
+            single_speech = doc["_source"]
             single_res = {k: single_speech[k] for k in single_speech.keys() if k not in ["unique_hash"]}
-            single_res["score"] = single_hit["_score"]
-            res.append(single_res)
-        return res
+            single_res["score"] = doc["_score"]
+            final_data.append(single_res)
+
+        return final_data

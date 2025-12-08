@@ -1,0 +1,1 @@
+{"russian_speeches": ["Base dataset: russian_speeches"], "test": ["Base dataset: russian_speeches", " Task Name: Term Distribution\nDataset Description: A dataset created using filters for analyzing the distribution of specific terms (e.g., \"poland\", \"russia\") within speeches, limited to dates between January 1st, 2001 and December 31st, 2002."]}

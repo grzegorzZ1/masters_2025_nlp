@@ -1,10 +1,9 @@
 from workers.worker_classes.dataset_workers.BaseSubsetWorkerModule import BaseSubsetWorker
 
 class SubsetCreator(BaseSubsetWorker):
-    def __init__(self, input_instances, subset_database, subset_max_size=10000):
+    def __init__(self, input_instances, subset_database):
         super().__init__()
         self.subset_database = subset_database
-        self.subset_max_size = subset_max_size
         self.formatted_index_dataset_name = self.subset_database.replace(" ", "_")
         self.input_instances = input_instances
 

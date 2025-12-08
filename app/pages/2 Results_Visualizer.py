@@ -1,6 +1,8 @@
 import streamlit as st
+import time
 import os
 import pickle
+import json
 from workers.worker_classes.dataset_workers import SubsetDeletor
 from elasticsearch import Elasticsearch
 from typing import _LiteralGenericAlias
@@ -48,6 +50,13 @@ with col2:
         st.session_state.final_dataset = chosen_dataset
     if st.session_state.final_dataset:
         st.write(f"Dataset **{st.session_state.final_dataset}** loaded ✅")
+        with st.expander("Dataset description"):
+            print(os.getcwd())
+            description_file_path = f"app/{os.getenv('DATASET_DESCRIPTIONS')}"
+            with open(description_file_path, "r") as f:
+                descriptions = json.load(f)
+            
+            st.write(descriptions[st.session_state.final_dataset])
         if st.button("Delete dataset"):
             subset_deletor = SubsetDeletor(st.session_state.final_dataset)
             subset_deletor.work()
@@ -92,6 +101,7 @@ if st.session_state.final_task and st.session_state.final_dataset:
             if user_subset_name:
                 subset_len = results_worker._create_subset_dataset(user_subset_name)
                 st.success(f"Subset with {subset_len} observations created!")
+                time.sleep(3)
                 st.rerun()
             else:
                 st.warning("Please provide a unique name for new subset.")

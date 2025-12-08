@@ -1,3 +1,8 @@
+# TODO:
+- Add support for multiple datasets (make dataset in results visualizer a multichoice field and support multiple indices in queries)
+- At the end of display add list of all selected speeches and make it possible to unselect speeches there to not include them in vizualization and saving dataset
+
+
 # Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
 Thesis Author: Grzegorz Zbrzeżny
 

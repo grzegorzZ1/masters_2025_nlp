@@ -10,13 +10,14 @@ class TermDistributionWorker(ResultsWorker):
 
     def work(self, task_instance, index_name):
         super().work(task_instance, index_name)
+
         appear_counts = {}
         docs_counts = {}
         for word in task_instance.terms.split(","):
             appear_counts[word] = {}
             docs_counts[word] = {}
 
-            for key, val in self.data.items():
+            for key, val in self.final_data.items():
                 appear_counts[word][key] = val.lower().split().count(word.lower())
 
                 counts = 0
@@ -63,9 +64,7 @@ class TermDistributionWorker(ResultsWorker):
 
         st.pyplot(fig)
     
-    def _query_texts(self, task_instance, index_name):
-        subset_speech_texts = {}
-
+    def _create_query(self, task_instance):
         terms_list = []
         for word in task_instance.terms.split(","):
             terms_list.append({"match": {"text": word}})
@@ -90,23 +89,20 @@ class TermDistributionWorker(ResultsWorker):
                 ]
             }
         }
+        return query
 
-        response = self.es_client.search(
-            index=index_name,
-            query=query,
-            size=self.subset_max_size
-        )
-        self.instances_for_new_subset = []
-        for doc in response["hits"]["hits"]:
-            self.instances_for_new_subset.append(doc)
+    def _prepare_final_data(self):
+        final_data = {}
+
+        for doc in self.data:
             doc_date = doc["_source"]["date"].split("T")[0]
-            if task_instance.granularity == "month":
+            if self.task_instance.granularity == "month":
                 doc_date = "-".join(doc_date.split("-")[:2])
-            if task_instance.granularity == "year":
+            if self.task_instance.granularity == "year":
                 doc_date = doc_date.split("-")[0]
-            if doc_date not in subset_speech_texts:
-                subset_speech_texts[doc_date] = doc["_source"]["text"]
+            if doc_date not in final_data:
+                final_data[doc_date] = doc["_source"]["text"]
             else:
-                subset_speech_texts[doc_date] = subset_speech_texts[doc_date] + " [END] " + doc["_source"]["text"]
-        
-        return subset_speech_texts
+                final_data[doc_date] = final_data[doc_date] + " [END] " + doc["_source"]["text"]
+
+        return final_data
