@@ -51,7 +51,6 @@ with col2:
     if st.session_state.final_dataset:
         st.write(f"Dataset **{st.session_state.final_dataset}** loaded ✅")
         with st.expander("Dataset description"):
-            print(os.getcwd())
             description_file_path = f"app/{os.getenv('DATASET_DESCRIPTIONS')}"
             with open(description_file_path, "r") as f:
                 descriptions = json.load(f)
@@ -66,7 +65,6 @@ if st.session_state.final_task:
     st.subheader(f"Chosen task: {st.session_state.final_task.name.replace('_', ' ').capitalize()}")
 
     for key, value in st.session_state.final_task:
-        print(key)
         field = type(st.session_state.final_task).model_fields[key]
         description = field.description
         if type(field.annotation) == _LiteralGenericAlias:

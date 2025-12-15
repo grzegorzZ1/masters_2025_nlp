@@ -1,7 +1,14 @@
 import streamlit as st
 from dotenv import load_dotenv
 import json
-from workers.worker_classes.chat_workers import *
+from workers.worker_classes.chat_workers import (
+    TaskChosenResponse,
+    InvalidResponse,
+    TaskRecognizer,
+    FieldValidator,
+    FieldInputer,
+    FinalResponse
+)
 import pickle
 
 load_dotenv()
@@ -55,7 +62,6 @@ if prompt := st.chat_input("What is your question?"):
             formatted_answer = invalid_fields_response_llm.work(
                 st.session_state.final_task, st.session_state.invalid_fields
             )
-            print(prompt)
             st.session_state.final_task = field_inputer.work(
                 st.session_state.final_task, prompt
             )
