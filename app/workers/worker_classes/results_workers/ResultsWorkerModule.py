@@ -28,8 +28,8 @@ class ResultsWorker(ABC):
     def _query_texts(self, task_instance, index_name):
         pass
 
-    def _create_subset_dataset(self, new_subset_name):
-        subset_creator = SubsetCreator(self.data, new_subset_name)
+    def _create_subset_dataset(self, new_data, new_subset_name):
+        subset_creator = SubsetCreator(new_data, new_subset_name)
         subset_deletor = SubsetDeletor(new_subset_name)
         try:
             print("Refreshing your index...")

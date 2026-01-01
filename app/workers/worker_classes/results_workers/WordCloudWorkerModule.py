@@ -9,8 +9,8 @@ class WordCloudWorker(ResultsWorker):
     def __init__(self):
         super().__init__()
 
-    def work(self, task_instance, index_name):
-        super().work(task_instance, index_name)
+    def work(self, task_instance, index_name, data=None):
+        super().work(task_instance, index_name, data=data)
 
         all_words = []
         for speech in self.final_data:

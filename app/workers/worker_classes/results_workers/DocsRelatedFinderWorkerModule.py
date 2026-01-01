@@ -6,11 +6,13 @@ class DocsRelatedFinderWorker(ResultsWorker):
     def __init__(self):
         super().__init__()
 
-    def work(self, task_instance, index_name):
-        super().work(task_instance, index_name, task_instance.result_count)
+    def work(self, task_instance, index_name, data=None):
+        super().work(task_instance, index_name, task_instance.result_count, data=data)
 
+        titles = []
         full_texts = []
         for row in self.final_data:
+            titles.append(row.get("title", None))
             full_texts.append(row.pop("text", None))
         df = pd.json_normalize(self.final_data)
 
@@ -44,6 +46,7 @@ class DocsRelatedFinderWorker(ResultsWorker):
 
         if selected_row["selection"]["rows"]:
             idx = selected_row["selection"]["rows"][0]
+            st.write(f"**{titles[idx]}**")
             st.write(full_texts[idx])
     
     def _create_query(self, task_instance):
