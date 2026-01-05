@@ -9,4 +9,4 @@ class ChatWorker(ABC):
         pass
 
     def _ollama_request(self, prompt, is_stream=True):
-        ollama_request(prompt, is_stream)
+        return ollama_request(prompt, is_stream).json()["response"]

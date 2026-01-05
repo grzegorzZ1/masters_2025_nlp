@@ -21,6 +21,4 @@ class TaskChosenResponse(ChatWorker):
                 + "\n"
             )
         whole_answer += "Please choose which task suits you best. If you think there is no good task for your needs please specify more details."
-        chunk_size = 16
-        for i in range(0, len(whole_answer), chunk_size):
-            yield whole_answer[i:i+chunk_size]
+        return whole_answer

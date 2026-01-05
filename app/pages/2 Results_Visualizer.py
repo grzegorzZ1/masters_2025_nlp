@@ -89,7 +89,8 @@ if st.session_state.output_type == "Vizualization":
     if st.session_state.final_task and st.session_state.final_dataset:
         regenerate_data = st.radio(
             "Regenerate data?",
-            ("Yes", "No")
+            ("Yes", "No"),
+            index=1
         )
         if st.button("Vizualize"):
             if regenerate_data == "Yes":

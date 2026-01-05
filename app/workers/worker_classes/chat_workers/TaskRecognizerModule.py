@@ -16,6 +16,7 @@ class TaskRecognizer(ChatWorker):
                 WordCloud,
                 RelationFinder,
                 RelatedTermCounts,
+                DocsRelatedFinder
             ]
 
     def work(self, user_prompt):
@@ -27,7 +28,8 @@ class TaskRecognizer(ChatWorker):
         return chosen_tasks
 
     def _find_task(self, user_prompt):
-        prompt_embedd = self.embedding_model.encode(user_prompt).reshape(1, -1)
+        filtered_decription = self._task_description_from_prompt(user_prompt)
+        prompt_embedd = self.embedding_model.encode(filtered_decription).reshape(1, -1)
         task_names = []
         cosine_similarities = []
 
@@ -41,3 +43,12 @@ class TaskRecognizer(ChatWorker):
         cosine_similarities = np.array(cosine_similarities).reshape(1, -1)[0]
         task_names = np.array(task_names)[np.argsort(cosine_similarities)][::-1]
         return task_names[:3]
+
+    def _task_description_from_prompt(self, user_prompt):
+        prompt = f"""
+You will be given a description of a text analytical task provided by the user.
+Provide short (max 2 sentences) description of this task without mentioning its parameters which user might provide, just overall overview of the task.
+User prompt is: {user_prompt}
+Your answer should contain just the description without any additions.
+"""
+        return self._ollama_request(prompt, is_stream=False)
