@@ -15,39 +15,35 @@ class DocsRelatedFinderWorker(ResultsWorker):
             titles.append(row.get("title", None))
             full_texts.append(row.pop("text", None))
         df = pd.json_normalize(self.final_data)
-
         cols = ["score"] + [c for c in df.columns if c != "score"]
-        df = df[cols]
 
-        selected_row = st.dataframe(
-            df,
-            use_container_width=True,
-            hide_index=True,
-            column_config={
-                "score": st.column_config.NumberColumn(
-                    "Score",
-                    format="%.3f",
-                    width="small",
-                ),
-                "date": st.column_config.DatetimeColumn(
-                    "Date",
-                    format="YYYY-MM-DD HH:mm",
-                    width="small",
-                ),
-                "title": st.column_config.TextColumn(
-                    "Title",
-                    width="large",
-                ),
-            },
-            height=600,
-            on_select="rerun",
-            selection_mode="single-row",
-        )
+        if "score" in df:
+            df = df[cols]
 
-        if selected_row["selection"]["rows"]:
-            idx = selected_row["selection"]["rows"][0]
-            st.write(f"**{titles[idx]}**")
-            st.write(full_texts[idx])
+            st.dataframe(
+                df,
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "score": st.column_config.NumberColumn(
+                        "Score",
+                        format="%.3f",
+                        width="small",
+                    ),
+                    "date": st.column_config.DatetimeColumn(
+                        "Date",
+                        format="YYYY-MM-DD HH:mm",
+                        width="small",
+                    ),
+                    "title": st.column_config.TextColumn(
+                        "Title",
+                        width="large",
+                    ),
+                },
+                height=600,
+            )
+        else:
+            st.write("No related texts found.")
     
     def _create_query(self, task_instance):
         query = {}

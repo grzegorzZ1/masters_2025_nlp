@@ -9,12 +9,25 @@ class FieldInputer(ChatWorker):
 
     def work(self, task_instance):
 
+        validators = {}
+        for _, value in type(task_instance).__pydantic_decorators__.field_validators.items():
+            for field_name in value.info.fields:
+                validators[field_name] = value.func
+
         empty_fields = self._find_empty_fields(task_instance)
 
         field_values = {}
         for name, properties in empty_fields.items():
-            field_values[name] = st.text_input(name, value="", help=properties['description'])
-
+            curr_field_value = st.text_input(name, help=properties['description'])
+            if name in validators:
+                try:
+                    validators[name](curr_field_value)
+                    field_values[name] = curr_field_value
+                except Exception as e:
+                    st.error(e)
+                    field_values[name] = ""
+            else:
+                field_values[name] = curr_field_value
         return field_values
 
 

@@ -72,7 +72,7 @@ if st.session_state.final_task and not st.session_state.saving_task:
 if st.session_state.saving_task:
     st.write(f"Chosen task: **{st.session_state.final_task.name}**")
     field_values = field_inputer.work(st.session_state.final_task)
-    
+
     field_values_complete = True
     for name, value in field_values.items():
         if value == "":

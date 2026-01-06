@@ -1,5 +1,5 @@
 # TODO:
-- After user specifies values for fields for a chosen task in task recognizer do validaiton including pydantic + LLM which can provide him fixed versions of what was put there if user made a small mistake or refactor might make this field more efficient
+- After user specifies values for fields for a chosen task in task recognizer before pydantic validation meybe use LLM which can provide him/her fixed versions of what was put there if user made a small mistake or refactor might make this field more efficient
 
 
 # Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
