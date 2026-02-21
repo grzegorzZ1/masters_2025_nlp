@@ -1,5 +1,12 @@
 # TODO:
 - After user specifies values for fields for a chosen task in task recognizer before pydantic validation meybe use LLM which can provide him/her fixed versions of what was put there if user made a small mistake or refactor might make this field more efficient
+- Add field 'place' in index (russia or not russia)
+
+# Next tasks to implement (priorities):
+1. Do chmury słów dodać opcję dopisania jakiego rodzaju słowa nas interesują (np przymiotniki, kraje, itd) i pokazać tylko je. Ewentualnie podać słowo i pokazać tylko słowa związane z nim (np. podane slowo polska, pokaze slowa zwiazane typu warszawa, sąsiad, itd.)
+2. input: pojęcie (np. Polska) i termin (np. wróg); znajdź fragmenty w których pojęcie zostało wspomniane jako termin i stwórz bazę terminów.
+2. Znalezienie fragmetów w których dany termin (np. Polska) występuje w jakimś konkretnym czasie historycznym (np. Polska w XVIII wieku, we współczesnośći, po drugiej wojnie światowej. Można to ewentualnie zawęzić do trwałych granic czasowych typu wcześniej, XX wiek, współczesność).
+3. współwystępowanie kilku terminów (np. Polska i WW2) w jakimś mniejszym fragmencie tekstu i stworzenie nowego subsetu w tych fragmentów; wskazanie tekstów w których to występuje
 
 
 # Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
