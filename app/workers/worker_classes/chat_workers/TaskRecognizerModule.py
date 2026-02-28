@@ -9,7 +9,7 @@ from sentence_transformers import SentenceTransformer
 class TaskRecognizer(ChatWorker):
     def __init__(self):
         super().__init__()
-        self.embedding_model = SentenceTransformer(os.getenv("EMBEDDING_MODEL"))
+        self.embedding_model = SentenceTransformer(os.getenv("EMBEDDING_MODEL"), device="cpu")
         with open("app/workers/utils/task_definitions/embeddings.json", "r") as file:
             self.task_classes = [
                 TermDistribution,

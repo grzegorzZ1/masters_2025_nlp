@@ -1,12 +1,9 @@
-# TODO:
-- After user specifies values for fields for a chosen task in task recognizer before pydantic validation meybe use LLM which can provide him/her fixed versions of what was put there if user made a small mistake or refactor might make this field more efficient
-- Add field 'place' in index (russia or not russia)
-
 # Next tasks to implement (priorities):
-1. Do chmury słów dodać opcję dopisania jakiego rodzaju słowa nas interesują (np przymiotniki, kraje, itd) i pokazać tylko je. Ewentualnie podać słowo i pokazać tylko słowa związane z nim (np. podane slowo polska, pokaze slowa zwiazane typu warszawa, sąsiad, itd.)
-2. input: pojęcie (np. Polska) i termin (np. wróg); znajdź fragmenty w których pojęcie zostało wspomniane jako termin i stwórz bazę terminów.
-2. Znalezienie fragmetów w których dany termin (np. Polska) występuje w jakimś konkretnym czasie historycznym (np. Polska w XVIII wieku, we współczesnośći, po drugiej wojnie światowej. Można to ewentualnie zawęzić do trwałych granic czasowych typu wcześniej, XX wiek, współczesność).
-3. współwystępowanie kilku terminów (np. Polska i WW2) w jakimś mniejszym fragmencie tekstu i stworzenie nowego subsetu w tych fragmentów; wskazanie tekstów w których to występuje
+1. (FragmentRelatedFinder) Find fragments related to given term and make ES index for them. To make it work with ContexIdentifier it is important to make sure in each fragment subject must be identified and probably updated in text itself.
+
+2. (ContexIdentifier) Input: subject (e.g., Poland), term (e.g., enemy); find fragments in which the subject is mentioned as a term and create a database of those fragments.
+
+3. (TimelineIdentifier) Znalezienie fragmetów w których dany termin (np. Polska) występuje w jakimś konkretnym czasie historycznym (np. Polska w XVIII wieku, we współczesnośći, po drugiej wojnie światowej. Można to ewentualnie zawęzić do trwałych granic czasowych typu wcześniej, XX wiek, współczesność).
 
 
 # Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
@@ -31,57 +28,45 @@ STATYSTYKA
 
 
 KONTEKST
-* W jakim kontekście najczęściej pojawia się „Polska”? (wróg, partner, sojusznik, sąsiad)
-* Jak Putin charakteryzuje USA – bardziej jako zagrożenie czy potencjalnego partnera?
-* Jakie określenia najczęściej towarzyszą słowu „Ukraina”?
-* Jakie metafory Putin stosuje wobec USA, Ukrainy, Polski i Niemiec?
-* Czy w odniesieniach do Polski częściej występują konteksty historyczne czy współczesne?
-* Czy Rosja częściej opisywana jest jako „ofiara”, „lider”, czy „obrońca”?
+* W jakim kontekście najczęściej pojawia się „Polska”? (wróg, partner, sojusznik, sąsiad) (TermRelationIdentifier)
+* Jak Putin charakteryzuje USA – bardziej jako zagrożenie czy potencjalnego partnera? (TermRelationIdentifier)
+* Jakie określenia najczęściej towarzyszą słowu „Ukraina”? (TermMentionIdentifier)
+* Jakie metafory Putin stosuje wobec USA, Ukrainy, Polski i Niemiec? (?)
+* Czy w odniesieniach do Polski częściej występują konteksty historyczne czy współczesne? (TimelineIdentifier)
+* Czy Rosja częściej opisywana jest jako „ofiara”, „lider”, czy „obrońca”? (TermRelationIdentifier)
 
 
 ZMIANA W CZASIE
-* Jak zmienia się obraz Ukrainy (*Polski, Niemiec, USA) w przemówieniach od 2000 do 2024 roku?
-* Kiedy zaczynają się pojawiać liczne odniesienia do „ruskiego miru”?
-* Jak często wspomina o rozszerzeniu NATO – przed 2004 i po 2004 roku?
-* Kiedy zaczynają dominować wątki o „suwerenności” w polityce zagranicznej?
-* Jak często mówi o „zagrożeniu” przed i po 2014 roku?
-* W których latach najczęściej występują wątki związane z gospodarką?
-* W którym momencie Putin zaczyna mówić o „wielobiegunowym świecie”?
+* Jak zmienia się obraz Ukrainy (*Polski, Niemiec, USA) w przemówieniach od 2000 do 2024 roku? (?)
+* Kiedy zaczynają się pojawiać liczne odniesienia do „ruskiego miru”? (?)
+* Jak często wspomina o rozszerzeniu NATO – przed 2004 i po 2004 roku? (?)
+* Kiedy zaczynają dominować wątki o „suwerenności” w polityce zagranicznej? (TermMentionIdentifier)
+* Jak często mówi o „zagrożeniu” przed i po 2014 roku? (TaskTermDistribution)
+* W których latach najczęściej występują wątki związane z gospodarką? (TermMentionIdentifier)
+* W którym momencie Putin zaczyna mówić o „wielobiegunowym świecie”? (TermMentionIdentifier)
 
 
 PORÓWNANIE
-* Jak różni się narracja wobec Polski i Niemiec?
-* Czy o USA mówi tym samym językiem co o NATO?
-* Jakie wątki historyczne pojawiają się w odniesieniu do Ukrainy, a jakie do Gruzji?
-* Czy częściej mówi pozytywnie o Chinach niż o Indiach?
-* Jak zmienia się ton wypowiedzi wobec USA w porównaniu z Unią Europejską?
-* Jak różni się obraz Niemiec w latach 2003 (wojna w Iraku) i 2014 (kryzys ukraiński)?
+* Jak różni się narracja wobec Polski i Niemiec? (?)
+* Czy o USA mówi tym samym językiem co o NATO? (?)
+* Jakie wątki historyczne pojawiają się w odniesieniu do Ukrainy, a jakie do Gruzji? (?)
+* Czy częściej mówi pozytywnie o Chinach niż o Indiach? (?)
+* Jak zmienia się ton wypowiedzi wobec USA w porównaniu z Unią Europejską? (?)
+* Jak różni się obraz Niemiec w latach 2003 (wojna w Iraku) i 2014 (kryzys ukraiński)? (?)
 
 
 INTERPRETACJE
-* Jakie są najczęściej powtarzające się argumenty Putina za umacnianiem armii?
-* Jak konstruuje obraz „wroga”?
-* Jakie wydarzenia historyczne służą mu jako legitymizacja działań wobec Ukrainy?
-* W jaki sposób używa narracji o „zwycięstwie w II wojnie światowej”?
-* Jakie elementy mitu o „wielkiej Rosji” powtarzają się w jego wystąpieniach?
-* Jakie są trzy główne sposoby opisywania Zachodu?
-* Jak Putin łączy wątki historyczne z aktualną polityką zagraniczną?
-* W jaki sposób mówi o „zagrożeniu” w celu mobilizacji społecznej?
-* Jakie motywy religijne pojawiają się w jego przemówieniach?
-* Jak przedstawia rolę Rosji w świecie – jako mocarstwa obronnego czy ekspansywnego?
+* Jakie są najczęściej powtarzające się argumenty Putina za umacnianiem armii? (?)
+* Jak konstruuje obraz „wroga”? (?)
+* Jakie wydarzenia historyczne służą mu jako legitymizacja działań wobec Ukrainy? (?)
+* W jaki sposób używa narracji o „zwycięstwie w II wojnie światowej”? (?)
+* Jakie elementy mitu o „wielkiej Rosji” powtarzają się w jego wystąpieniach? (?)
+* Jakie są trzy główne sposoby opisywania Zachodu? (?)
+* Jak Putin łączy wątki historyczne z aktualną polityką zagraniczną? (?)
+* W jaki sposób mówi o „zagrożeniu” w celu mobilizacji społecznej? (?)
+* Jakie motywy religijne pojawiają się w jego przemówieniach? (?)
+* Jak przedstawia rolę Rosji w świecie – jako mocarstwa obronnego czy ekspansywnego? (?)
 
-
-TESTY KRYTYCZNE (podpowiedział mi Chat do weryfikacji)
-* Pokaż 3 najważniejsze cytaty, w których mówi o Polsce w 2014 roku.
-* Streść przemówienie z dnia X (sprawdź, czy streszczenie jest zgodne z oryginałem).
-* Wypisz fragmenty, w których używa sformułowania „wielobiegunowy świat”.
-* Wymień wszystkie państwa, o których wspomina w wystąpieniu z dnia Y.
-* Czy Putin kiedykolwiek mówił o wydarzeniu Z (celowo fałszywe pytanie – test halucynacji)?
-* Porównaj jego opis Krymu w 2008 i 2014 roku (cytaty + interpretacja).
-* Podaj cytaty, w których opisuje Polskę w kategoriach historycznych.
-* Czy kiedykolwiek używa pojęcia „demokratyzacja” w pozytywnym kontekście?
-* Jakie trzy różne argumenty przywołuje, gdy mówi o sankcjach?
-* Wymień fragmenty, w których odwołuje się do Lenina lub ZSRR.
 
 #### Questions translated to English:
 
@@ -131,16 +116,3 @@ INTERPRETATIONS
 * How does he speak about “threats” to mobilize society?
 * What religious motifs appear in his speeches?
 * How does he portray Russia’s role in the world – as a defensive or expansionist power?
-
-CRITICAL TESTS
-(suggested by Chat for verification)
-* Show the 3 most important quotes in which he speaks about Poland in 2014.
-* Summarize the speech from date X (verify whether the summary matches the original).
-* List the passages where he uses the term “multipolar world.”
-* List all the countries mentioned in the speech from date Y.
-* Has Putin ever spoken about event Z? (deliberately false question – hallucination test)
-* Compare his description of Crimea in 2008 and 2014 (quotes + interpretation).
-* Provide quotes where he describes Poland in historical terms.
-* Has he ever used the term “democratization” in a positive context?
-* What three different arguments does he invoke when speaking about sanctions?
-* List the passages in which he refers to Lenin or the USSR.
