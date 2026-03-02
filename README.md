@@ -1,5 +1,5 @@
 # Next tasks to implement (priorities):
-1. (FragmentRelatedFinder) Find fragments related to given term and make ES index for them. To make it work with ContexIdentifier it is important to make sure in each fragment subject must be identified and probably updated in text itself.
+1. (SemanticSegmentator) Sematicaly Segmentize documents and make ES index for them.
 
 2. (ContexIdentifier) Input: subject (e.g., Poland), term (e.g., enemy); find fragments in which the subject is mentioned as a term and create a database of those fragments.
 
