@@ -82,6 +82,14 @@ class WordCloudWorker(ResultsWorker):
 
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.imshow(wordcloud, interpolation='bilinear')
+        title = ""
+        if self.task_instance.focus_term:
+            title += f"Focus: '{self.task_instance.focus_term}', "
+        if self.task_instance.pos_filter:
+            title += f"POS: {self.task_instance.pos_filter}s"
+        if self.task_instance.min_date and self.task_instance.max_date:
+            title += f"\nDate: {self.task_instance.min_date} to {self.task_instance.max_date}"
+        ax.set_title(title, fontsize=16, fontweight='bold')
         ax.axis('off')
         
         st.pyplot(fig)

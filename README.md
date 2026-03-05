@@ -1,10 +1,10 @@
 # Next tasks to implement (priorities):
-1. (SemanticSegmentator) Sematicaly Segmentize documents and make ES index for them.
 
-2. (ContexIdentifier) Input: subject (e.g., Poland), term (e.g., enemy); find fragments in which the subject is mentioned as a term and create a database of those fragments.
+1. (RelationFinder) Input: subject (e.g., Poland), predicate (e.g., enemy), object (e.g., Russia); find fragments which mention defined triples. Predicate and object can be empty, but subject is required.
 
-3. (TimelineIdentifier) Znalezienie fragmetów w których dany termin (np. Polska) występuje w jakimś konkretnym czasie historycznym (np. Polska w XVIII wieku, we współczesnośći, po drugiej wojnie światowej. Można to ewentualnie zawęzić do trwałych granic czasowych typu wcześniej, XX wiek, współczesność).
+If predicate is empty find all fragments which mention subject and object in relation and define all relations. User then can click and filterby relation.
 
+If object is empty find all fragments which mention subject and predicate in relation and define all objects. User then can click and filter by object.
 
 # Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
 Thesis Author: Grzegorz Zbrzeżny
