@@ -1,6 +1,8 @@
 # Next tasks to implement (priorities):
 
-1. (RelationFinder) Input: subject (e.g., Poland), predicate (e.g., enemy), object (e.g., Russia); find fragments which mention defined triples. Predicate and object can be empty, but subject is required.
+1. Upgrade TermDistribution. Enable defining plots for related words. User can specify how many most related words to include. Related words can be verified by LLM before plotting.
+
+2. (RelationFinder) Input: subject (e.g., Poland), predicate (e.g., enemy), object (e.g., Russia); find fragments which mention defined triples. Predicate and object can be empty, but subject is required.
 
 If predicate is empty find all fragments which mention subject and object in relation and define all relations. User then can click and filterby relation.
 
@@ -40,7 +42,7 @@ ZMIANA W CZASIE
 * Jak zmienia się obraz Ukrainy (*Polski, Niemiec, USA) w przemówieniach od 2000 do 2024 roku? (?)
 * Kiedy zaczynają się pojawiać liczne odniesienia do „ruskiego miru”? (?)
 * Jak często wspomina o rozszerzeniu NATO – przed 2004 i po 2004 roku? (?)
-* Kiedy zaczynają dominować wątki o „suwerenności” w polityce zagranicznej? (TermMentionIdentifier)
+* Kiedy zaczynają dominować wątki o „suwerenności”  w polityce zagranicznej? (TermMentionIdentifier)
 * Jak często mówi o „zagrożeniu” przed i po 2014 roku? (TaskTermDistribution)
 * W których latach najczęściej występują wątki związane z gospodarką? (TermMentionIdentifier)
 * W którym momencie Putin zaczyna mówić o „wielobiegunowym świecie”? (TermMentionIdentifier)
