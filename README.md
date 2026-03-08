@@ -1,6 +1,6 @@
 # Next tasks to implement (priorities):
 
-1. Upgrade TermDistribution. Enable defining plots for related words. User can specify how many most related words to include. Related words can be verified by LLM before plotting.
+1. Change TaskRecognizer to be a RAG basing on documents from ElasticSearch index. Based on prompt create proper query to retrieve relevant documents and then use them to answer user question.
 
 2. (RelationFinder) Input: subject (e.g., Poland), predicate (e.g., enemy), object (e.g., Russia); find fragments which mention defined triples. Predicate and object can be empty, but subject is required.
 

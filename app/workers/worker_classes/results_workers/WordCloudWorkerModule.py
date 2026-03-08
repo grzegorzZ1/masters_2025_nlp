@@ -21,7 +21,7 @@ class WordCloudWorker(ResultsWorker):
         super().__init__()
         nltk.download("punkt_tab", quiet=True)
         nltk.download("averaged_perceptron_tagger_eng", quiet=True)
-        self.embedding_model = SentenceTransformer(os.getenv("EMBEDDING_MODEL"), device="cpu")
+        self.embedding_model = SentenceTransformer(os.getenv("EMBEDDING_MODEL"), device=os.getenv("MODEL_DEVICE", "cpu"))
 
     def _filter_related_words(self, all_words, focus_term):
         """Keep only words semantically related to focus_term based on similarity distribution."""
