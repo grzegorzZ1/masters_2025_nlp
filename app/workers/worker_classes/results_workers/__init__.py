@@ -3,15 +3,13 @@
 from .WordCloudWorkerModule import WordCloudWorker
 from .ResultsWorkerModule import ResultsWorker
 from .TermDistributionWorkerModule import TermDistributionWorker
-from .RelatedTermCountsWorkerModule import RelatedTermCountsWorker
-from .RelationFinderWorkerModule import RelationFinderWorker
+from .SocialNetworkWorkerModule import SocialNetworkWorker
 from .DocsRelatedFinderWorkerModule import DocsRelatedFinderWorker
 
 __all__ = [
     "WordCloudWorker",
     "ResultsWorker",
     "TermDistributionWorker",
-    "RelatedTermCountsWorker",
-    "RelationFinderWorker",
+    "SocialNetworkWorker",
     "DocsRelatedFinderWorker"
 ]

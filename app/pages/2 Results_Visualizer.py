@@ -92,7 +92,7 @@ if st.session_state.output_type == "Vizualization":
             ("Yes", "No"),
             index=1
         )
-        if st.button("Vizualize"):
+        def run_vizualization(regenerate_data):
             if regenerate_data == "Yes":
                 st.session_state.current_outputs = None
 
@@ -104,6 +104,12 @@ if st.session_state.output_type == "Vizualization":
                 data=st.session_state.current_outputs
             )
             st.session_state.current_outputs = st.session_state.results_worker.data
+        if "vizualization" in st.session_state:
+            run_vizualization(regenerate_data)
+        if st.button("Vizualize"):
+            if "vizualization" in st.session_state:
+                del st.session_state["vizualization"]
+            run_vizualization(regenerate_data)
 
 if st.session_state.current_outputs and st.session_state.output_type == "Speeches":
     final_data = []
@@ -111,6 +117,7 @@ if st.session_state.current_outputs and st.session_state.output_type == "Speeche
         single_speech = doc["_source"]
         single_res = {k: single_speech[k] for k in single_speech.keys() if k not in ["unique_hash"]}
         single_res["score"] = doc["_score"]
+        single_res["id"] = doc["_id"]
         final_data.append(single_res)
 
     titles = []
