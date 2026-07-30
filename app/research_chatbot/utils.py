@@ -1,12 +1,10 @@
-from workers.utils.func_utils import ollama_request
-from uuid import uuid4
-
-def generate_thread_id() -> str:
-    return str(uuid4())
-
 from uuid import uuid4
 import requests
 import os
+
+
+def generate_thread_id() -> str:
+    return str(uuid4())
 
 def ollama_request(prompt, is_stream=False):
     payload = {

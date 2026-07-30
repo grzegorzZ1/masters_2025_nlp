@@ -14,8 +14,6 @@ class TaskRecognizer(ChatWorker):
             self.task_classes = [
                 TermDistribution,
                 WordCloud,
-                RelationFinder,
-                RelatedTermCounts,
                 DocsRelatedFinder
             ]
 
