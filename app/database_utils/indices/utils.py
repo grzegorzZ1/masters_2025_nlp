@@ -4,6 +4,7 @@ import numpy as np
 import os
 import json
 from tqdm import tqdm
+import pandas as pd
 import hashlib
 
 
@@ -176,7 +177,6 @@ def load_nlp_model(model_name):
     return nlp
 
 def create_fragments_index(es_client, dataset_path: str, n_speeches: int = -1):
-    nlp = load_nlp_model("en_core_web_sm")
 
     with open(dataset_path, "r") as f:
         speeches = json.load(f)
