@@ -1,92 +1,266 @@
 EXTRACT_RELATION_TRIPLETS_PROMPT = """
-You are a relation extraction model specialized in extracting political relations between political entities.
-Your task is to extract a relation triplets from the given text.
-A relation triplet consists of a subject, a predicate, and an object.
-The subject and object are entities, and the predicate describes the relationship between them.
-Return your answer in the following serializable JSON format:
+Extract political relations from the speech fragment.
+
+Return only valid JSON:
+
 {{
-    "triplets": [
-        {{
-            "subject": "...",
-            "predicate": "...",
-            "object": "..."
-        }},
-        ...
-    ]
+  "triplets": [
+    {{
+      "subject": "entity",
+      "predicate": "relation",
+      "object": "entity"
+    }}
+  ]
 }}
 
-The text is: {fragment}
+If there are no relations, return:
+{{"triplets": []}}
 
-Since we are considering political speeches make sure each entity is an entity relevant to politics, either inside (political party, government official) or outside the country (foreign government, international organization, other countries).
-Note that author of this speech is {speech_author}. You can consider it as a subject or object in the triplet.
-Note that the subject and object should be valid and concrete entities in a most concise and clear format and must be identifiable as a specific political entity.
-Return only a valid JSON object. Do not include any additional text, explanations, or symbols.
-"""
+RULES:
 
-REFORMULATE_RELATION_TRIPLET = """
-You are a relation extraction model specialized in extracting political relations between political entities.
-Your task is to reformulate the given relation triplet.
-Make sure subject and object are valid and concrete entities in a most concise and clear format related to politics, either inside (political party, government official) or outside the country (foreign government, international organization, other countries).
-Predicate should be a clear and very concise, best one word meaning the relationship between the subject and object.
-The most important is to not change meaning of relation between subject and object, but to make it more clear and concise with a single word if possible.
-The triplet is: subject: {subject}, predicate: {predicate}, object: {object}.
+- Subject and object must be politically relevant entities or concepts.
+- They may include countries, people, governments, institutions, parties,
+  organizations, political groups, laws, policies, rights, reforms,
+  political issues, security issues, or territories.
+- Avoid only clearly useless references such as pronouns, "someone",
+  "something", "everyone", or phrases with no identifiable meaning.
+- Extract only relations explicitly stated in the fragment.
+- Keep names close to how they appear in the text.
+- Keep different entities separate.
+- Use a short verb phrase as the predicate.
+- Preserve negation and modality.
+- Do not extract duplicate relations.
 
-Return answer in the following JSON format:
-{{
-    "subject": "...",
-    "predicate": "...",
-    "object": "..."
-}}
+PRONOUNS:
+
+- Replace "I", "me", or "my" with "{speech_author}".
+- Resolve other pronouns only when their meaning is clear.
+- Otherwise, skip relations that depend on them.
+- Use the speech author only when the author participates in the relation.
+
+Extract at most 10 relations.
+
+Speech author:
+{speech_author}
+
+Fragment:
+{fragment}
+
+Return only JSON.
 Do not include any additional text, explanations, or symbols.
+Do not return any code, punctuation, or quotation marks.
 """
 
 VALIDATE_TRIPLET_USEFULNESS = """
+Decide if this triplet is potentially useful for a political knowledge graph.
+
+Return exactly:
+useful
+or
+not_useful
+
+Triplet:
+subject: {subject}
+predicate: {predicate}
+object: {object}
+
+Return useful if:
+
+- subject and object are meaningful political entities, groups, institutions,
+  places, laws, policies, issues, rights, reforms, or other political concepts;
+- predicate expresses a clear relation or action;
+- the triplet makes reasonable sense on its own.
+
+Return not_useful only if:
+
+- subject or object is clearly meaningless, unresolved, or only a pronoun;
+- predicate does not express a real relation;
+- predicate only means mentioning, discussing, saying, or thinking;
+- the triplet is malformed or makes no sense.
+
+Do not reject a triplet only because an entity is broad or abstract.
+
+If uncertain, prefer useful.
+
+Return only useful or not_useful.
+Do not include any additional text, explanations, or symbols.
+Do not return any code, punctuation, or quotation marks.
+"""
+
+DECIDE_OUTLIER_FATE_ENTITY = """
+Classify the candidate as valid or invalid.
+
+Candidate:
+<entity>{outlier}</entity>
+
+valid:
+A meaningful noun or noun phrase useful in a political knowledge graph.
+It may describe a political actor, institution, country, government body,
+office, law, right, policy, security issue, diplomatic issue, public issue,
+or political concept.
+
+invalid:
+A pronoun, vague reference, verb phrase, complete sentence, quotation,
+instruction, time expression, malformed phrase, or clearly irrelevant object.
+
+Keep potentially useful political nodes.
+Reject only clearly unusable extractions.
+
+Return format:
+Return exactly one string: valid or invalid.
+Do not repeat the candidate.
+Do not provide an explanation.
+Do not include code, punctuation, or quotation marks.
+"""
+
+DECIDE_OUTLIER_FATE_RELATION = """
+Classify the candidate as valid or invalid.
+
+Candidate:
+<relation>{outlier}</relation>
+
+valid:
+A meaningful verb or verb phrase useful as a relation in a political knowledge graph.
+It may describe an action, position, cooperation, conflict, membership,
+responsibility, legal relation, diplomatic relation, communication, or other
+connection between two nodes. It may be negated or passive.
+
+invalid:
+A noun or topic, entity name, long fragment, complete sentence, quotation, or text that does not express a relation.
+
+Keep potentially useful relations.
+
+Return format:
+Return exactly one string: valid or invalid.
+Do not repeat the candidate.
+Do not provide an explanation.
+Do not include code, punctuation, or quotation marks.
+"""
+
+FIND_BETTER_ENTITY_NAME = """
 You are a political scientist model.
-Your task is to validate the given relation triplet in case of the usefulness in your political analysis.
-A relation triplet consists of a subject, a predicate, and an object.
-The triplet is: subject: {subject}, predicate: {predicate}, object: {object}.
-Think if subject and obejct are valid entities in a most concise and clear format related to politics, either inside (political party, government official) or outside the country (foreign government, international organization, other countries).
-Think if predicate is a relation between subject and object which make sense and might be useful for political text analysis.
-Return a single word "useful" if the triplet is useful for political text analysis, or "not_useful" if it is not useful.
+I have an entity name extracted from political speeches.
+You will be given a list of similar entity names extracted from the speeches.
+Your task is to find a single entity name that is the most clear and concise, and best replaces all the other entity names in the list.
+The entity list is: {list}.
+Return a single entity name that is the most clear and concise, and best replaces all the other entity names in the list.
+If you think that entites from list are not similar or the same type, return "do_not_merge".
 Do not include any additional text, explanations, or symbols.
 """
 
-VALIDATE_TRIPLET_REFORMULATION = """
-You are a political scientist model.
-I have two sets of relation triplets. First was extracted from the text, and second was reformulated by a relation extraction model.
-Your task is to validate if the reformulation of the triplet is valid and does not change the meaning of the relation between subject and object.
-The first triplet is: subject: {subject}, predicate: {predicate}, object: {object}.
-The second triplet is: subject: {reformulated_subject}, predicate: {reformulated_predicate}, object: {reformulated_object}.
-Return a single word "valid" if the reformulation is valid and does not change the meaning of the relation between subject and object, or "invalid" if it is not valid.
-You don't need to be very strict, if the reformulation is not perfect but still does not change the meaning of the relation between subject and object, consider it as valid.
-Do not include any additional text, explanations, or symbols.
-"""
-
-DECIDE_OUTLIER_FATE = """
-You are a political scientist model.
-I am building a political knowledge graph from political speeches.
-I have an entitiy extracted from the speeches.
-Decide whether this entity is a valid political entity or not.
-The entity is: {entity}.
-Return a single word "valid" if the entity is a valid political entity, or "invalid" if it is not valid.
-Do not include any additional text, explanations, or symbols.
-"""
 
 FIND_BETTER_RELATION_NAME = """
 You are a political scientist model.
-I have a relation name extracted from political speeches.
-You will be given a list of similar relation names extracted from the speeches.
-Your task is to find a single relation name that is the most clear and concise, and best replaces all the other relation names in the list.
-The relation list is: {relation_list}.
-Return a single relation name that is the most clear and concise, and best replaces all the other relation names in the list.
+I have a relation predicate extracted from political speeches.
+You will be given a list of similar relation predicates extracted from the speeches.
+Your task is to find a single relation predicate that is the most clear and concise, and best replaces all the other relation predicates in the list.
+The relation predicate list is: {list}.
+Return a single relation predicate that is the most clear and concise, and best replaces all the other relation predicates in the list.
+If you think that entites from list are not similar or the same type, return "do_not_merge".
 Do not include any additional text, explanations, or symbols.
 """
 
+VALIDATE_ENTITY_NAME = """
+Decide if the candidate is a valid name for a political knowledge-graph node.
+
+Return exactly:
+valid
+or
+invalid
+
+Candidate:
+{name}
+
+Return valid if the candidate:
+
+- is a concise noun or noun phrase;
+- represents one clear political entity or concept;
+- makes sense without extra context;
+
+Return invalid if it:
+
+- is a pronoun or vague reference;
+- is an action or relation phrase;
+- is a sentence or quotation;
+- contains several separate entities;
+- is too vague or malformed;
+- is an overly long description.
+
+Do not rewrite the candidate.
+
+If uncertain, return invalid.
+
+Return only valid or invalid. Do not include any additional text, explanations, or symbols.
+"""
+
 VALIDATE_RELATION_NAME = """
-You are a political scientist model.
-I have a relation name extracted from political speeches.
-Your task is to validate if the relation name is clear and concise, and if it makes sense as a relation between political entities.
-The relation name is: {relation_name}.
-Return a single word "valid" if the relation name is clear and concise, and makes sense as a relation between political entities, or "invalid" if it is not valid.
-Do not include any additional text, explanations, or symbols.
+Decide if the candidate is a good reusable relation name for a knowledge graph.
+
+Return exactly:
+valid
+or
+invalid
+
+Candidate:
+{name}
+
+Return valid if it:
+
+- is a verb or verb phrase;
+- expresses one clear relation;
+- works as: SUBJECT + relation + OBJECT;
+- is concise and reusable;
+
+
+Return invalid if it:
+
+- is a noun or topic;
+- is only a vague verb such as "is", "has", or "does";
+- contains several relations;
+- contains its own subject or object;
+- needs missing context;
+- only reports speech, such as "said";
+- is malformed.
+
+Negated and passive relations are valid.
+
+If uncertain, return invalid.
+
+Return only valid or invalid. Do not rewrite the candidate, include any additional text, explanations, or symbols.
+"""
+
+REFORMULATE_RELATION_TRIPLET = """
+Rewrite the predicate as a clear and concise relation.
+
+Predicate:
+{predicate}
+
+Rules:
+- Keep the original meaning.
+- Make it as short as possible.
+- Prefer one verb or a short verb phrase.
+- Preserve negation and modality.
+- The predicate must describe only the relation.
+- Do not include any entity, person, country, organization, institution, or proper name.
+- Do not include the subject or object inside the predicate.
+- Remove entity-specific details that are not part of the relation.
+- Do not add new information.
+
+Good:
+supports
+opposes
+cooperates with
+is a member of
+does not recognize
+imposed sanctions on
+
+Bad:
+supports Russia
+met with NATO
+criticized the United States
+Russia supports
+cooperates with China
+
+Return only the rewritten predicate as plain text.
+Do not use JSON, quotes, explanations, or additional text.
 """
