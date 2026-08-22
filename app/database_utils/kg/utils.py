@@ -1,6 +1,11 @@
 import os
 import requests
 
+from sentence_transformers import SentenceTransformer
+
+
+EMBEDD_MODEL_1 = SentenceTransformer("all-MiniLM-L6-v2", device=os.getenv("MODEL_DEVICE", "cpu"))
+
 def ollama_request(prompt, is_stream=False):
     payload = {
         "model": os.getenv("MODEL_NAME"),

@@ -127,8 +127,7 @@ connection between two nodes. It may be negated or passive.
 
 invalid:
 A noun or topic, entity name, long fragment, complete sentence, quotation, or text that does not express a relation.
-
-Keep potentially useful relations.
+Long and complex relations should be considered invalid.
 
 Return format:
 Return exactly one string: valid or invalid.
