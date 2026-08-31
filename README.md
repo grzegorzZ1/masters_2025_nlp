@@ -1,34 +1,120 @@
-### Main Subject Proposals
+# Next tasks to implement (priorities):
 
-* W transkryptach nie mówi tylko Putin/Miedwiediew -> jak wyłuskać tylko ich wypowiedzi?
+1. Change TaskRecognizer to be a RAG basing on documents from ElasticSearch index. Based on prompt create proper query to retrieve relevant documents and then use them to answer user question.
 
-* Jak proporcjonalnie często w kontekście Polski mówi Putin o historii? Jeśli udałoby się ustalić ratio pod kątem tematów za pomocą LDA i wyszłoby np. (30% historia, 20% gospodarka etc.), to już to byłoby bardzo wiele i punkt wyjścia do dalszych porównań z innymi krajami.
-* Widać w okresie Miedwiediewa, że ten okres cechował się anomalią - porównanie asocjacji słów używanych wobec PL z innymi okresami.
-* Stworzenie słownika/asocjacji słów dotyczących PL i Europy używanych przez Rosjan pod kątem nacechowania emocjonalnego (pozytywne/negatywne) -> to byłoby potencjalne narzędzie(punkt odniesienia) do tego, by oceniać zmieniającą się retorykę np. teraz. Istotne byłoby również zbadanie bogactwa leksykalnego, być może - docelowo - istnieją np. słowa (przymiotniki), które mają większy współczynnik prawdopodobieństwa, które padną w kontekście PL albo w kontekście Europy.
-* Wyekstrahować wypowiedzi Putina i Miedwiediewa, które są spontaniczne  (wywiady) i oddzielne badanie ich pod kątem wszystkiego -> asocjacja słów, sentiment analysis. A następnie porównanie z oficjalnym językiem. Być może da nam to punkt wyjścia do sformułowania hipotezy, gdzie w oficjalnych dokumentach "widać" Putina i Miedwiediewa, tj. gdzie mieli wpływ na treść albo w sposób bezpośredni albo w sposób taki, że speechwriter wiedział, na czym im zależy i wpisał to.
-* Identyfikacja hapaks legomena w kontekście Polski i Europy, chociaż to chyba byłoby lepsze, gdyby pracować na oryginale.
-W kontekście NER -> świetnie byłoby wyciągnąć np. konkretne wydarzenia historyczne, do których prezydent się odnosił w kontekście PL, jeśli współczynnik mówienia o historii prezydenta będzie wysoki. 
+2. (RelationFinder) Input: subject (e.g., Poland), predicate (e.g., enemy), object (e.g., Russia); find fragments which mention defined triples. Predicate and object can be empty, but subject is required.
 
-### Additional Subject Proposals
+If predicate is empty find all fragments which mention subject and object in relation and define all relations. User then can click and filterby relation.
 
-* Jak często w wystąpieniach pojawiają się odniesienia do Polski, Ukrainy, Niemiec i Stanów Zjednoczonych? Jak zmieniała się ich liczba w czasie?
+If object is empty find all fragments which mention subject and predicate in relation and define all objects. User then can click and filter by object.
 
-* Jakie słowa najczęściej współwystępują z nazwami tych państw? Czy ich kontekst zmienia się w zależności od okresu, tematyki lub audytorium?
+# Masters Thesis: "The analysis of Russian strategic communication 2000-2024 using Natural Language Processing" repository
+Thesis Author: Grzegorz Zbrzeżny
 
-* Czy ton wypowiedzi (pozytywny, neutralny, negatywny) różni się w odniesieniu do każdego z tych państw? Jak zmieniała się tonacja w czasie?
+Thesis Supervisor: dr Anna Wróblewska
 
-* Jakie główne tematy pojawiają się w wypowiedziach o Polsce, Ukrainie, Niemczech i Stanach Zjednoczonych? Czy tematy te ewoluują w czasie?
 
-* Jak przedstawiane są relacje między Rosją a Polską, Ukrainą, Niemcami i USA? Czy relacje te są opisywane w sposób hierarchiczny, partnerski, wrogi?
+## List of research questions created by author of this repository in collaboration with Ernest Wyciszkiewicz and Centrum Dialogu im. Juliusza Mieroszewskiego.
 
-* Jakie metafory lub obrazy są używane w odniesieniu do tych państw? Czy zmieniają się w zależności od kontekstu (np. wojna, gospodarka, kultura)?
+#### Original list of questions in Polish:
 
-* Jak zmienia się język i styl wypowiedzi dotyczących tych państw na przestrzeni lat? Czy można zaobserwować przejścia między fazami (np. dialog, krytyka, eskalacja)?
+STATYSTYKA
+* Ile razy w całej bazie występują słowa „Polska”, „Ukraina”, …? (TaskTermCount)
+* W których latach Putin najczęściej wspominał o ….? (TaskTermDistribution)
+* Jakie państwo, poza Rosją, pojawia się najczęściej w przemówieniach? (TaskTermCount)
+* Jakie trzy pojęcia związane z gospodarką pojawiają się najczęściej? (RelatedTermCounts)
+* Ile razy w kontekście militarnym występuje słowo „modernizacja”? (RelationFinder)
+* W ilu wystąpieniach pojawia się słowo „demokracja”? (TaskTermCount)
+* Jak często mówi o „przyjaźni” w stosunku do Chin? (RelationFinder)
+* W których latach pojawia się najwięcej odniesień do II wojny światowej (RelatedTermCounts)
 
-* Czy narracja na temat danego państwa różni się w zależności od tematyki (np. wojskowość, gospodarka, historia)?
 
-* Jak często i w jaki sposób w wypowiedziach Putina podkreślana jest różnica między „my” (Rosja) a „oni” (Polska, Ukraina, Niemcy, USA)?
+KONTEKST
+* W jakim kontekście najczęściej pojawia się „Polska”? (wróg, partner, sojusznik, sąsiad) (TermRelationIdentifier)
+* Jak Putin charakteryzuje USA – bardziej jako zagrożenie czy potencjalnego partnera? (TermRelationIdentifier)
+* Jakie określenia najczęściej towarzyszą słowu „Ukraina”? (TermMentionIdentifier)
+* Jakie metafory Putin stosuje wobec USA, Ukrainy, Polski i Niemiec? (?)
+* Czy w odniesieniach do Polski częściej występują konteksty historyczne czy współczesne? (TimelineIdentifier)
+* Czy Rosja częściej opisywana jest jako „ofiara”, „lider”, czy „obrońca”? (TermRelationIdentifier)
 
-* Jakie różnice wagi i znaczenia przypisywane są Polsce, Ukrainie, Niemcom i USA? Czy dane państwo odgrywa większą rolę w konkretnych narracjach?
 
-* Jak często pojawia się temat historii w odniesieniu do tych państw? Takie terminy jak m.in. „world war II”, great patriotic war”, „cold war”, “Hitler”, “Stalin”, “Peter the Great”, “Catherine the Great”, “Alexander Nevsky”, “historical justice”, “Russky mir (Russian world)”, “Novorossiya”, “Soverignty”, “Yalta”, “collapse of the USSR”, “multipolar world”, “historical Russia”, “ancient Rus’”
+ZMIANA W CZASIE
+* Jak zmienia się obraz Ukrainy (*Polski, Niemiec, USA) w przemówieniach od 2000 do 2024 roku? (?)
+* Kiedy zaczynają się pojawiać liczne odniesienia do „ruskiego miru”? (?)
+* Jak często wspomina o rozszerzeniu NATO – przed 2004 i po 2004 roku? (?)
+* Kiedy zaczynają dominować wątki o „suwerenności”  w polityce zagranicznej? (TermMentionIdentifier)
+* Jak często mówi o „zagrożeniu” przed i po 2014 roku? (TaskTermDistribution)
+* W których latach najczęściej występują wątki związane z gospodarką? (TermMentionIdentifier)
+* W którym momencie Putin zaczyna mówić o „wielobiegunowym świecie”? (TermMentionIdentifier)
+
+
+PORÓWNANIE
+* Jak różni się narracja wobec Polski i Niemiec? (?)
+* Czy o USA mówi tym samym językiem co o NATO? (?)
+* Jakie wątki historyczne pojawiają się w odniesieniu do Ukrainy, a jakie do Gruzji? (?)
+* Czy częściej mówi pozytywnie o Chinach niż o Indiach? (?)
+* Jak zmienia się ton wypowiedzi wobec USA w porównaniu z Unią Europejską? (?)
+* Jak różni się obraz Niemiec w latach 2003 (wojna w Iraku) i 2014 (kryzys ukraiński)? (?)
+
+
+INTERPRETACJE
+* Jakie są najczęściej powtarzające się argumenty Putina za umacnianiem armii? (?)
+* Jak konstruuje obraz „wroga”? (?)
+* Jakie wydarzenia historyczne służą mu jako legitymizacja działań wobec Ukrainy? (?)
+* W jaki sposób używa narracji o „zwycięstwie w II wojnie światowej”? (?)
+* Jakie elementy mitu o „wielkiej Rosji” powtarzają się w jego wystąpieniach? (?)
+* Jakie są trzy główne sposoby opisywania Zachodu? (?)
+* Jak Putin łączy wątki historyczne z aktualną polityką zagraniczną? (?)
+* W jaki sposób mówi o „zagrożeniu” w celu mobilizacji społecznej? (?)
+* Jakie motywy religijne pojawiają się w jego przemówieniach? (?)
+* Jak przedstawia rolę Rosji w świecie – jako mocarstwa obronnego czy ekspansywnego? (?)
+
+
+#### Questions translated to English:
+
+STATISTICS
+* How many times do the words “Poland”, “Ukraine”, … appear in the entire database? (TaskTermCount)
+* In which years did Putin most often mention …? 
+* Which country, apart from Russia, appears most frequently in his speeches?
+* Which three economy-related terms appear most often? 
+* How many times does the word “modernization” appear in a military context?
+* In how many speeches does the word “democracy” appear?
+* How often does he speak about “friendship” in relation to China?
+* In which years do the most references to World War II occur?
+
+CONTEXT
+* In what context does “Poland” most often appear? (enemy, partner, ally, neighbor)
+* How does Putin characterize the USA – more as a threat or as a potential partner?
+* What adjectives or terms most often accompany the word “Ukraine”?
+* What metaphors does Putin use toward the USA, Ukraine, Poland, and Germany?
+* In references to Poland, are historical or contemporary contexts more frequent?
+* Is Russia more often described as a “victim”, a “leader”, or a “defender”?
+
+CHANGE OVER TIME
+* How does the image of Ukraine (Poland, Germany, USA) change in his speeches from 2000 to 2024?
+* When do numerous references to the “Russian world” (russkiy mir) begin to appear?
+* How often does he mention NATO expansion – before and after 2004?
+* When do themes of “sovereignty” begin to dominate foreign policy discourse?
+* How often does he speak about “threats” before and after 2014?
+* In which years do economic topics appear most frequently?
+* At what point does Putin start talking about a “multipolar world”?
+
+COMPARISON
+* How does the narrative toward Poland differ from that toward Germany?
+* Does he speak about the USA in the same terms as about NATO?
+* What historical themes appear in relation to Ukraine, and which in relation to Georgia?
+* Does he speak more positively about China than about India?
+* How does the tone toward the USA compare with that toward the European Union?
+* How does the image of Germany differ between 2003 (Iraq War) and 2014 (Ukraine crisis)?
+
+INTERPRETATIONS
+* What are Putin’s most common arguments for strengthening the army?
+* How does he construct the image of the “enemy”?
+* What historical events does he use to legitimize actions toward Ukraine?
+* How does he employ the narrative of “victory in World War II”?
+* What elements of the “Great Russia” myth recur in his speeches?
+* What are the three main ways he describes the West?
+* How does Putin connect historical themes with current foreign policy?
+* How does he speak about “threats” to mobilize society?
+* What religious motifs appear in his speeches?
+* How does he portray Russia’s role in the world – as a defensive or expansionist power?
