@@ -6,9 +6,9 @@ from sentence_transformers import SentenceTransformer
 
 EMBEDD_MODEL_1 = SentenceTransformer("all-MiniLM-L6-v2", device=os.getenv("MODEL_DEVICE", "cpu"))
 
-def ollama_request(prompt, is_stream=False):
+def ollama_request(prompt, model_name=os.getenv("MODEL_NAME"), is_stream=False):
     payload = {
-        "model": os.getenv("MODEL_NAME"),
+        "model": model_name,
         "prompt": prompt,
         "stream": is_stream,
     }
