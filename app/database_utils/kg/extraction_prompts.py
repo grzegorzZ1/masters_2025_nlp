@@ -41,8 +41,7 @@ Do not return any code, punctuation, or quotation marks.
 DECIDE_OUTLIER_FATE_ENTITY = """
 Classify the candidate as valid or invalid.
 
-Candidate:
-<entity>{outlier}</entity>
+Candidate: {outlier}
 
 valid:
 A meaningful noun or noun phrase useful in a political knowledge graph.
@@ -54,7 +53,6 @@ invalid:
 A pronoun, vague reference, verb phrase, complete sentence, quotation,
 instruction, time expression, malformed phrase, or clearly irrelevant object.
 
-Keep potentially useful political nodes.
 Reject only clearly unusable extractions.
 
 Return format:
@@ -67,8 +65,7 @@ Do not include code, punctuation, or quotation marks.
 DECIDE_OUTLIER_FATE_RELATION = """
 Classify the candidate as valid or invalid.
 
-Candidate:
-<relation>{outlier}</relation>
+Candidate: {outlier}
 
 valid:
 A meaningful verb or verb phrase useful as a relation in a political knowledge graph.
@@ -110,75 +107,6 @@ If you think that entites from list are not similar or the same type, return "do
 Do not include any additional text, explanations, or symbols.
 """
 
-VALIDATE_ENTITY_NAME = """
-Decide if the candidate is a valid name for a political knowledge-graph node.
-
-Return exactly:
-valid
-or
-invalid
-
-Candidate:
-{name}
-
-Return valid if the candidate:
-
-- is a concise noun or noun phrase;
-- represents one clear political entity or concept;
-- makes sense without extra context;
-
-Return invalid if it:
-
-- is a pronoun or vague reference;
-- is an action or relation phrase;
-- is a sentence or quotation;
-- contains several separate entities;
-- is too vague or malformed;
-- is an overly long description.
-
-Do not rewrite the candidate.
-
-If uncertain, return invalid.
-
-Return only valid or invalid. Do not include any additional text, explanations, or symbols.
-"""
-
-VALIDATE_RELATION_NAME = """
-Decide if the candidate is a good reusable relation name for a knowledge graph.
-
-Return exactly:
-valid
-or
-invalid
-
-Candidate:
-{name}
-
-Return valid if it:
-
-- is a verb or verb phrase;
-- expresses one clear relation;
-- works as: SUBJECT + relation + OBJECT;
-- is concise and reusable;
-
-
-Return invalid if it:
-
-- is a noun or topic;
-- is only a vague verb such as "is", "has", or "does";
-- contains several relations;
-- contains its own subject or object;
-- needs missing context;
-- only reports speech, such as "said";
-- is malformed.
-
-Negated and passive relations are valid.
-
-If uncertain, return invalid.
-
-Return only valid or invalid. Do not rewrite the candidate, include any additional text, explanations, or symbols.
-"""
-
 REFORMULATE_RELATION_TRIPLET = """
 Rewrite the predicate as a clear and concise relation.
 
@@ -195,4 +123,11 @@ Rules:
 
 Return only the rewritten predicate as plain text.
 Do not use JSON, quotes, explanations, or additional text.
+"""
+
+NATURAL_LANGUAGE_PROMPT = """
+Change the following information triplet into a natural language sentence.
+Do not add any additional information.
+
+triplet: {triplet}
 """
