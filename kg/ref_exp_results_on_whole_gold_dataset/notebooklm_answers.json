@@ -3,11 +3,15 @@
         "Q1": "Ukraine is portrayed as a close, sovereign partner with deep historical, cultural, and economic ties to Russia.",
         "Q2": "Between 2008 and 2013, Ukraine is portrayed as a culturally close fraternal neighbor and strategic economic partner facing severe financial difficulties, gas payment disputes, and complex geopolitical choices between European and Eurasian integration.",
         "Q3": "Ukraine is portrayed as a Western-controlled, aggressive \"anti-Russia\" bridgehead ruled by a neo-Nazi regime that poses a direct security threat to Russia.",
+        "Q4": "Not mentioned in the sources.",
         "Q5": "Avoiding civilian losses",
         "Q6": "Rejection of post-coup elites and respect for state independence",
+        "Q7": "Not specified in the provided sources",
+        "Q8": "International terrorism",
         "Q9": "no",
         "Q10": "yes",
         "Q11": "2014",
+        "Q12": "2014",
         "Q13": "2014"
     },
     "Task2": {
@@ -15,7 +19,10 @@
         "Q2": "Sovereignty themes are mentioned in the contexts of national security and military defense, technological and scientific independence through import substitution, opposing foreign intervention in international relations, and Moscow's historical role in statehood.",
         "Q3": "Between 2015 and 2030, sovereignty themes are mentioned in the contexts of national security and defense, economic, technological, and financial independence, international relations and non-interference, and recognizing the sovereignty of foreign states and territories.",
         "Q4": "Territorial integrity",
+        "Q5": "Foreign debt and foreign borrowing",
         "Q6": "yes",
+        "Q7": "no",
+        "Q8": "yes",
         "Q9": "2002",
         "Q10": "2008"
     },
@@ -23,34 +30,55 @@
         "Q1": "Between 2000 and 2007, multipolarity is portrayed as an essential framework for global stability, peace, and security that respects national sovereignty and balances the interests of all countries without rivalry or hostility.",
         "Q2": "multipolarity is portrayed as an evolving, objective reality of an increasingly complex and multidimensional modern world.",
         "Q3": "The international system is portrayed as actively evolving into a democratic, law-based multipolar world order as unipolar hegemony collapses.",
+        "Q4": "A single state",
         "Q5": "Multipolar",
+        "Q6": "no",
+        "Q7": "no",
+        "Q8": "no",
+        "Q9": "2007",
         "Q10": "2000"
     },
     "Task4": {
+        "Q1": "Russia is portrayed as a victim of international terrorism, Cold War isolation and European division, historical political repression, and Western double standards and sanctions",
         "Q2": "Russia is portrayed as a defender of its Fatherland, outer borders, national interests, and the security and rights of its citizens and populations in regions like Donbass",
         "Q3": "Russia is portrayed as an influential global power and strategic partner that promotes a multipolar world order, maintains international security, and leads in key economic and technological domains.",
+        "Q4": "Russia justified its special military operation as necessary to protect the people of Donbass from genocide and suffering, and as a pre-emptive act of self-defence to neutralize NATO expansion and security threats on its borders",
         "Q5": "The provided sources do not contain information on how the victim, defender, and leader images are related between 2000-01-01 and 2030-12-31.",
         "Q6": "Traditional values",
+        "Q7": "Not mentioned in the sources.",
         "Q8": "Global power",
         "Q9": "yes",
         "Q10": "yes",
         "Q11": "yes",
         "Q12": "yes",
-        "Q13": "no"
+        "Q13": "no",
+        "Q14": "no"
     },
     "Task5": {
+        "Q1": "Poland is portrayed as a key regional partner with historical and economic ties, but increasingly as a security concern due to NATO expansion, US missile defense installations, and sensitive historical disputes.",
         "Q2": "Germany is portrayed as a key strategic, economic, and diplomatic partner in Europe",
+        "Q3": "In the context of Poland, the sources reference historical events including the Polish–Lithuanian Commonwealth, the 1938 division of Czechoslovakia, the September 1939 outbreak of World War II, the Katyn massacre, the liberation of Poland from Nazi occupation, Poland's 2004 accession to the European Union, the 2010 Smolensk air disaster, and the February 2014 Kiev agreement",
+        "Q4": "Important partner in Central Europe",
         "Q5": "Locomotive of a united Europe",
         "Q6": "no",
         "Q7": "yes",
-        "Q11": "yes"
+        "Q8": "no",
+        "Q9": "no",
+        "Q10": "yes",
+        "Q11": "yes",
+        "Q12": "2019",
+        "Q13": "2010"
     },
     "Task6": {
         "Q1": "The United States is portrayed as evolving from a key strategic partner and major global economy into an adversarial power that relies on sanctions, economic pressure, and geopolitical opposition.",
         "Q2": "The European Union is portrayed as a key economic and strategic partner, shifting over time from active trade and integration efforts toward growing political tension, sanctions, and strained relations.",
+        "Q3": "Not mentioned in the sources",
         "Q4": "United States",
+        "Q5": "United States",
         "Q6": "Major trade and economic partner",
         "Q7": "yes",
-        "Q9": "2014"
+        "Q8": "yes",
+        "Q9": "2014",
+        "Q10": "2022"
     }
 }

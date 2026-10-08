@@ -1,0 +1,43 @@
+task_idx,question_idx,question,time_frame,question_type,question_answer
+Task1,Q1,How is Ukraine portrayed?,"2000-01-01,2004-01-01",sentence,"Ukraine is a neighbor, partner and its connected with Russia economically, historically, and culturally."
+Task1,Q2,How is Ukraine portrayed?,"2008-01-01,2013-12-31",sentence,Ukraine is having limited political agency and its not being fully separate from Russia.
+Task1,Q3,How is Ukraine portrayed?,"2022-02-24,2030-12-31",sentence,Ukraine is an anti-russia instrument of the west and a nato foothold
+Task1,Q5,What is the approach to Ukrainian civilians?,"2021-01-01,2030-12-31",single_phrase,brothers
+Task1,Q6,What is the approach to Ukrainian state and elites?,"2014-01-01,2020-12-31",single_phrase,delegitimized
+Task1,Q9,Is Ukraine portrayed as hostile whole time?,"2000-01-01,2030-12-31",binary,no
+Task1,Q10,Does the portrayal of Ukraine become more radical over time?,"2000-01-01,2030-12-31",binary,yes
+Task1,Q11,What year marks the change from partnership to paternalism in the portrayal of Ukraine?,"2000-01-01,2030-12-31",date,2004
+Task1,Q13,What year marks the change from paternalism to effective questioning of Ukraine's separate statehood?,"2000-01-01,2030-12-31",date,2022
+Task2,Q1,In what context are sovereignty themes mentioned?,"2004-01-01,2007-12-31",sentence,Sovereignty is important as the state must be resistant to external interference.
+Task2,Q2,In what context are sovereignty themes mentioned?,"2012-01-01,2014-12-31",sentence,Sovereignty is a political slogan.
+Task2,Q3,In what context are sovereignty themes mentioned?,"2015-01-01,2030-12-31",sentence,Sovereignty is one of the central concepts organizing entire approach to international politics.
+Task2,Q4,What characteristic of foreign policy accompanies sovereignty?,"2000-01-01,2004-12-31",single_phrase,independence
+Task2,Q6,Does USA influence sovereignty themes?,"2000-01-01,2004-01-01",binary,yes
+Task2,Q9,Which year marks the first increase in the importance of sovereignty themes?,"2000-01-01,2030-12-31",date,2004
+Task2,Q10,Which year marks the second increase in the importance of sovereignty themes?,"2000-01-01,2030-12-31",date,2012
+Task3,Q1,How is multipolarity portrayed?,"2000-01-01,2007-01-01",sentence,Multipolarity is a counterweight to American unipolarity.
+Task3,Q2,How is multipolarity portrayed?,"2010-01-01,2030-12-31",sentence,"Multipolarity is a several major centers of power, Russia as one of them."
+Task3,Q3,How is international system portrayed in relation to multipolarity?,"2010-01-01,2030-12-31",sentence,International system is a process of negotiating interests among major powers.
+Task3,Q5,Which model does Putin support? Multipolar or unipolar?,"2000-01-01,2030-12-31",single_phrase,Multipolar
+Task3,Q10,What year does multipolarity start to appear?,"2000-01-01,2030-12-31",date,2000
+Task4,Q2,How is Russia portrayed as a defender?,"2000-01-01,2030-12-31",sentence,"Russia is portrayed as a defender of itself, Russians, the Russian world, and traditional values."
+Task4,Q3,How is Russia portrayed as a leader or major power?,"2000-01-01,2030-12-31",sentence,"Russia is portrayed as the victor of the Second World War, a nuclear power, and one of the major poles of the world."
+Task4,Q5,"How are the victim, defender, and leader images related?","2000-01-01,2030-12-31",sentence,"Victim, Defender, and Leader images are interconnected."
+Task4,Q6,What kind of values does Russia claim to defend?,"2000-01-01,2030-12-31",single_phrase,traditional values
+Task4,Q8,What is Russia status on international stage?,"2000-01-01,2030-12-31",single_phrase,pole of the world
+Task4,Q9,Is Russia portrayed as a victim of West?,"2000-01-01,2030-12-31",binary,yes
+Task4,Q10,Is Russia portrayed as a military leader?,"2000-01-01,2030-12-31",binary,yes
+Task4,Q11,Is Russia also portrayed as a powerful international actor?,"2000-01-01,2030-12-31",binary,yes
+Task4,Q12,Is Russia portrayed as a defender of its own interests?,"2000-01-01,2030-12-31",binary,yes
+Task4,Q13,Is Russia portrayed as waging war without justification?,"2000-01-01,2030-12-31",binary,no
+Task5,Q2,How is Germany portrayed?,"2000-01-01,2030-12-31",sentence,"Germany is portrayed as a historical aggressor, but also as an economic and political partner."
+Task5,Q5,What historical role is Germany associated with?,"2000-01-01,2030-12-31",single_phrase,nazi aggressor
+Task5,Q6,Is Germany portrayed only as a historical enemy?,"2000-01-01,2030-12-31",binary,no
+Task5,Q7,Is Germany portrayed as an important economic and political partner?,"2000-01-01,2030-12-31",binary,yes
+Task5,Q11,Does portrayal of Germany change over time?,"2000-01-01,2030-12-31",binary,yes
+Task6,Q1,How is the United States portrayed?,"2000-01-01,2030-12-31",sentence,"The United States is portrayed as the main force behind NATO enlargement, color revolutions, and unipolarity."
+Task6,Q2,How is the European Union portrayed?,"2000-01-01,2030-12-31",sentence,"While the European Union is portrayed as a part of the West, it is also seen as an economic partner and a culturally close region."
+Task6,Q4,What country is portrayed as a leader of the collective West?,"2000-01-01,2030-12-31",single_phrase,United States
+Task6,Q6,What role is Europe assigned economically?,"2000-01-01,2030-12-31",single_phrase,economic partner
+Task6,Q7,Is the United States overally portrayed more negatively than the European Union?,"2000-01-01,2030-12-31",binary,yes
+Task6,Q9,When did the European Union begin to be portrayed as a threat?,"2000-01-01,2030-12-31",date,2013
