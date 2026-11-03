@@ -17,4 +17,5 @@ Thesis Supervisor: dr Anna Wróblewska
 
 * Gold-standard answers prepared by an expert are [here](thesis_supplementary_files/expert_answers.txt);
 * Gold-standard subqestions dataset is [here](thesis_supplementary_files/gold_dataset.csv);
-* Knowledge Graph used for the final thesis experiment is [here](thesis_supplementary_files/enhanced_russian_speeches_triplets.ttl). 
+* Knowledge Graph used for the final thesis experiment is [here](thesis_supplementary_files/enhanced_russian_speeches_triplets.ttl).
+* Final evaluation dataset is [here](thesis_supplementary_files/final_validation_data.csv). 
