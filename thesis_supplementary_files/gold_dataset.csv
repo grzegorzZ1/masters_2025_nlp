@@ -1,4 +1,4 @@
-task_idx,question_idx,question,time_frame,question_type,question_answer
+task_idx,question_idx,question,time_frame,question_type,gold_answer
 Task1,Q1,How is Ukraine portrayed?,"2000-01-01,2004-01-01",sentence,"Ukraine is a neighbor, partner and its connected with Russia economically, historically, and culturally."
 Task1,Q2,How is Ukraine portrayed?,"2008-01-01,2013-12-31",sentence,Ukraine is having limited political agency and its not being fully separate from Russia.
 Task1,Q3,How is Ukraine portrayed?,"2022-02-24,2030-12-31",sentence,Ukraine is an anti-russia instrument of the west and a nato foothold
